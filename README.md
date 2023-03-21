@@ -8,7 +8,7 @@ Aquest joc no té un sistema per jugar competitivament entre dos equips, així q
 L'aplicació et permet crear o unir-se a un equip, buscar o crear ofertes de partida (amb un horari i mapa específics), i quan un equip accepta una partida, aquesta es guarda en una llista.
 
 Diagrama E-R:
-![Diagrama sense títol drawio (3)](https://user-images.githubusercontent.com/120336452/225849705-8bcd665f-da3e-4da2-8dea-324272afb8ee.png)
+file:///home/alumne/Baixades/diagramaE-R.drawio%20(1).png
 
 Diagrama Relacional:
 
