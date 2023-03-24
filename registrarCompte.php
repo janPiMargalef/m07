@@ -1,34 +1,15 @@
 <?php
-require_once('confirmarRegistre.php');
+require_once('config.php');
 ?>
 
 <html>
     <head>
         <title>Registre't</title>
+        <link rel="stylesheet" type="text/css" href="estils.css">
     </head>
     <body>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="menu.php">Menu</a>
-        <a class="nav-link active" href="equip.php">Equip</a>
-        <!--a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled">Disabled</a>
-        <a class="nav-link disabled">Disabled</a>-->
-        <a class="nav-link active" href="buscar.php">Buscar</a>
-        <a class="nav-link active" href="partides.php">Partides</a>
-        <a class="nav-link active" href="perfil.php">Perfil</a>
-      </div>
-    </div>
-  </div>
-</nav>
-        <div>
+        
+        
         <?php
 if(isset($_POST['crear']))
 {
@@ -50,8 +31,9 @@ if($contrasenya == $confirmaContrasenya)
 $sql = "INSERT INTO usuaris (usuari, contrasenya) VALUES (?,?)";
 $stmtinsert = $db->prepare($sql);
 $result = $stmtinsert->execute([$usuari, $contrasenya]);
-//header("Location: iniciarSessio.php");
 echo "<script>alert('Guardat Correctament'); </script>";
+header("Location: iniciarSessio.php");
+exit();
 }
 else{
      echo "<script>alert('Contrasenya no concorda'); </script>";
@@ -60,16 +42,20 @@ else{
 }
 }
 ?>
-        </div>
-        <form method="POST">  <!-- action="iniciarSessio.php" -->
-    usuari <input type="text" name="usuariR" required="">
-     
-    contrasenya <input type="text" name="contrasenyaR" required="">
-  confirma  <input type="text" name="confirmaContrasenya" required="">
-   
-    <input type="submit" name="crear" value="registrarCompte">
-</form>
-
+        <div class="login-container">
+		<h2>Registrar Compte</h2>
+		<form method="post">
+			<label for="username">Nom de usuari</label>
+			<input type="text" name="usuariR" id="username" required>
+			<label for="password">Contrasenya</label>
+			<input type="password" name="contrasenyaR" id="password" required>
+                        <label for="password">Confirma contrasenya</label>
+			<input type="password" name="confirmaContrasenya" id="password" required>
+			<button type="submit" name="crear" value="registrarCompte">Crear compte</button>
+                        <p>Ja tens un compte?<a href="iniciarSessio.php">Inicia Sessió</a></p>
+		</form>
+	</div>
+      
 
  </body>
 </html>

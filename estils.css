@@ -1,0 +1,46 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #F0F0F0;
+}
+
+.login-container {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 20px;
+	margin: 70px auto;
+	max-width: 400px;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+label {
+	display: block;
+	margin-bottom: 14px;
+}
+
+input[type="text"], input[type="password"] {
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 24px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+button[type="submit"] {
+	background-color: #4CAF50;
+	color: #FFFFFF;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
+	font-size: 16px;
+}
+
+button[type="submit"]:hover {
+	background-color: #3E8E41;
+}
+

@@ -1,6 +1,10 @@
+<?php
+session_start();
+?>
 <html>
     <head>
         <title>perfil</title>
+        <link rel="stylesheet" type="text/css" href="estilsPerfil.css">
     </head>
     <body>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -24,7 +28,20 @@
     </div>
   </div>
 </nav>
-<h3>Configuració Perfil</h3>
+<div class="perfil-container">
+		<div class="perfil-header">
+			<img src="avatar.png" alt="Avatar" class="avatar">
+			<h2>Configuració d'usuari</h2>
+			<a href="tancarSessio.php" class="cerrar-sesion">Tancar Sessió</a>
+		</div>
+		<div class="perfil-content">
+                    <h3>Informació de perfil</h3>
+                    <?php
+                    echo"Nom d'usuari: $_SESSION[usuariS] </br>";
+                    echo"descripcio?";
+                    ?>
+		</div>
+	</div>
 <?php
 //id
 //usuari
