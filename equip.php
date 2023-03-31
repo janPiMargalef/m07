@@ -29,6 +29,7 @@ require_once('config.php');
   </div>
 </nav>
 <?php     //FER UN IF amb $_SESSION[aquest_usuari_te_equip] PER TEURE LA OPCIO DE CREAR EQUIP I AFEGIR LA OPCIO MARXARDE L'EQUIP
+//crear equip
 if(isset($_POST["crearEquip"]))
 {
     $db_usuari = "root";
@@ -39,6 +40,7 @@ $nomservidor = "localhost";
 $pdo = new PDO("mysql:host=$nomservidor;dbname=$db_nom", $db_usuari, $db_contrasenya);
 
     $name = $_POST['nomEquip'];
+    //$descripcio
     
     $sentencia = $db->prepare("SELECT nom_equip FROM equips WHERE nom_equip = ? LIMIT 1;");
     $sentencia->execute([$name]);
@@ -49,23 +51,29 @@ if($numFiles > 0)
     echo "<script>alert('equip ja existeix'); </script>";
 }
 else{
-    $stmt = $pdo->prepare('INSERT INTO equips (nom_equip) VALUES (?)');
-    $stmt->execute([$name]);
+    $stmt = $pdo->prepare('INSERT INTO equips (nom_equip) VALUES (?)'); //(nom_equip, descripcio) VALUES (...)
+    $stmt->execute([$name]);//$descripcio
 
     $groupId = $pdo->lastInsertId();
+    
+    //SESSION_(usuari)
+    //$stmts = $pdo->prepare('INSERT INTO usuaris_equips (nom_usuari, nom_equip) VALUES (?,?)');
+    //$stmts->execute([$name, $usuari]);
 }
 }
 ?>
 <form  method="POST">
     <label for="name">Nom de l'equip:</label>
     <input type="text" name="nomEquip">
+    <label for="name">Descripció de l'equip:</label>
+    //textarea
     <button type="submit" name="crearEquip">Crear equip</button>
 </form>
 <form action="agregar_usuario.php" method="POST">
     <label for="group">Seleccionar grupo:</label>
     <select name="group" id="group">
         <?php
-            
+            //llistar equips
 $pdo = new PDO("mysql:host=$nomservidor;dbname=$db_nom", $db_usuari, $db_contrasenya);
             $stmt = $pdo->prepare('SELECT * FROM equips');
             $stmt->execute();
@@ -75,13 +83,6 @@ $pdo = new PDO("mysql:host=$nomservidor;dbname=$db_nom", $db_usuari, $db_contras
             }
         ?>
     </select>
-    <label for="name">Nombre del usuario:</label>
-    <input type="text" name="name" id="name">
-    <label for="email">Correo electrónico:</label>
-    <input type="email" name="email" id="email">
-    <label for="password">Contraseña:</label>
-    <input type="password" name="password" id="password">
-    <button type="submit">Agregar usuario</button>
 </form>
     </body>
 </html>

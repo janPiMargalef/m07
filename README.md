@@ -14,3 +14,5 @@ Diagrama Relacional:
 
 Manual usuari de l'aplicació
 
+nota: fer id_equip autoincrement, crear taula "relacions" per relacionar usuari amb equip, 
+
