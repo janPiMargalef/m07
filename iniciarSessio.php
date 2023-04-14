@@ -16,10 +16,24 @@ $contrasenyaS = $_POST['contrasenyaS'];
 $sentencia = $db->prepare("SELECT * FROM usuaris WHERE usuari = '$usuariS' AND contrasenya = '$contrasenyaS'");
 $sentencia->execute([$usuariS]);
 $numFiles = $sentencia->rowCount(); 
+
 if($numFiles > 0)
 {
-    $_SESSION["usuariS"] = $usuariS;
-    $_SESSION["contrasenyaS"] = $contrasenyaS;
+    
+$consulta = 'SELECT id_usuari, nom_equip FROM usuaris WHERE usuari = :usuari AND contrasenya = :contrasenya';//obtenir l'id i l'equip del jugador
+$stmt = $db->prepare($consulta);
+$stmt->bindParam(':usuari', $usuariS);
+$stmt->bindParam(':contrasenya', $contrasenyaS);
+$stmt->execute();
+$fila = $stmt->fetch(PDO::FETCH_ASSOC);
+$UsuariId = $fila['id_usuari'];
+$UsuariEquip = $fila['nom_equip'];
+
+$_SESSION['UsuariId'] = $UsuariId;
+$_SESSION['UsuariEquip'] = $UsuariEquip;
+$_SESSION["usuariS"] = $usuariS;
+$_SESSION["contrasenyaS"] = $contrasenyaS;
+    
     header("Location:menu.php");//header menu i amb session_start recopilar info del user
     exit();
 }

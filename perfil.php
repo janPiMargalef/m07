@@ -29,8 +29,12 @@ session_start();
   </div>
 </nav>
 <div class="perfil-container">
+    
+   
+    
 		<div class="perfil-header">
-			<img src="avatar.png" alt="Avatar" class="avatar">
+                    
+
 			<h2>Configuració d'usuari</h2>
 			<a href="tancarSessio.php" class="cerrar-sesion">Tancar Sessió</a>
 		</div>
@@ -38,7 +42,7 @@ session_start();
                     <h3>Informació de perfil</h3>
                     <?php
                     echo"Nom d'usuari: $_SESSION[usuariS] </br>";
-                    echo"descripcio?";
+                    echo "Id d'usuari: $_SESSION[UsuariId]</br>";
                     ?>
 		</div>
 	</div>

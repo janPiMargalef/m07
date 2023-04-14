@@ -34,6 +34,8 @@ session_start();
 if(isset($_SESSION['usuariS']))
 {
     echo "$_SESSION[usuariS]";
+    echo "$_SESSION[UsuariId]";
+    
 }
  else {
     

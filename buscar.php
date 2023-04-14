@@ -26,7 +26,7 @@
 </nav>
 
 <?php
-//llistar ofertes ordenades per dia(primer fer make offer)(en els SQL crear 2 TAULES una partida_trobada i l'altra partida_oferida amb claus alienes equip, equip estara relacionada amb usuaris.1:n m:n
+//llistar ofertes ordenades per dia(primer fer make offer)(en els SQL crear 2 TAULES una partida_trobada i l'altra partida_oferida amb claus alienes equip, equip estara relacionada amb usuaris
 
 ?>
     </body>
