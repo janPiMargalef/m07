@@ -31,9 +31,10 @@ session_start();
   </div>
 </nav>
 <?php
-if(isset($_SESSION['usuariS']))
-{
-    echo "$_SESSION[usuariS]";
+
+if(isset($_SESSION['UsuariEmail'])) // afegir aixo a totes les pàgines, per si no s'ha iniciat sessió, surti la opció iniciar (fer-ho al acabar els CSS )
+{ echo"$_SESSION[Usuari]</br>";
+   echo"$_SESSION[UsuariEmail]</br>";
     echo "$_SESSION[UsuariId]";
     
 }
@@ -41,9 +42,7 @@ if(isset($_SESSION['usuariS']))
     
 echo "<a href='registrarCompte.php'>Registret</a> <a href='iniciarSessio.php'>Inicia Sessió</a>";
  }
-  
-  
  ?>
     
-        </body>
+</body>
 </html>

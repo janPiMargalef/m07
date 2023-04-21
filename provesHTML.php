@@ -1,45 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Counter Strike</title>
-	<link rel="stylesheet" href="provesCSS.css">
-</head>
-<body>
-	<header>
-		<h1>Counter Strike</h1>
-		<nav>
-			<ul>
-				<li><a href="#">Inicio</a></li>
-				<li><a href="#">Jugar</a></li>
-				<li><a href="#">Armas</a></li>
-				<li><a href="#">Equipos</a></li>
-			</ul>
-		</nav>
-	</header>
-	
-	<main>
-		<section class="banner">
-			<h2>¡Bienvenido al mundo de Counter Strike!</h2>
-		</section>
-
-		<section class="contenido">
-			<h3>Sobre Counter Strike</h3>
-			<p>Counter-Strike es un videojuego de disparos en primera persona multijugador. Se juega en línea a través de una red de Internet o de una red de área local. Los jugadores pueden unirse a uno de los dos equipos, Terroristas o Fuerzas Especiales, y deben completar objetivos mientras luchan entre sí.</p>
-
-			<h3>Características del juego</h3>
-			<ul>
-				<li>Armas realistas</li>
-				<li>Mapas detallados</li>
-				<li>Modos de juego variados</li>
-				<li>Competitivo y emocionante</li>
-			</ul>
-		</section>
-	</main>
-
-	<footer>
-		<p>© 2023 Counter Strike. Todos los derechos reservados.</p>
-	</footer>
-</body>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Encuesta de hora</title>
+  </head>
+  <body>
+    <form method="post" action="procesar_encuesta.php">
+      <label for="hora">Seleccione una hora:</label>
+      <select name="hora" id="hora">
+        <?php for ($i = 0; $i <= 23; $i++) { ?>
+          <option value="<?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>"><?php echo str_pad($i, 2, '0', STR_PAD_LEFT); ?>:00</option>
+        <?php } ?>
+      </select>
+      <br>
+      <input type="submit" value="Enviar">
+    </form>
+      <h1>Guardar día en la base de datos</h1>
+	<form method="POST" action="guardar_dia.php">
+		<label>Ingresa el día (formato DD):</label>
+		<input type="text" name="dia">
+		<input type="submit" value="Guardar">
+	</form>
+      <form action="buscar.php" method="get">
+  <label for="equipo">Buscar equipo:</label>
+  <input type="text" id="equipo" name="equipo">
+  <input type="submit" value="Buscar">
+</form>
+  </body>
 </html>
+<?php/*
+// Conectarse a la base de datos
+$dsn = 'mysql:host=localhost;dbname=nombre_de_la_base_de_datos;charset=utf8mb4';
+$usuario = 'nombre_de_usuario';
+$contraseña = 'contraseña_del_usuario';
+$opciones = array(
+    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES => false,
+);
+$pdo = new PDO($dsn, $usuario, $contraseña, $opciones);
+
+// Obtener la hora seleccionada por el usuario
+$hora = $_POST['hora'];
+
+// Insertar la respuesta en la base de datos
+$sql = 'INSERT INTO encuesta_hora (hora) VALUES (?)';
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$hora]);
+
+// Mostrar las respuestas ordenadas por la hora seleccionada
+$sql = 'SELECT * FROM encuesta_hora ORDER BY hora';
+$stmt = $pdo->query($sql);
+while ($fila = $stmt->fetch()) {
+    echo $fila['hora'] . '<br>';
+}
+*/?>
+<?php
+$nom = "jan";
+$edat = 10;
+$email = "email@gmailcom";
+echo '<form method="post">';
+  echo '<label>Nombre:</label>';
+  echo '<input type="text" name="nombre" value="' . $nom . '"><br>';
+  echo '<label>Edad:</label>';
+  echo '<input type="number" name="edad" value="' . $edat . '" readonly><br>';
+  echo '<label>Email:</label>';
+  echo '<input type="email" name="email" value="' . $email . '"><br>';
+  echo '<button type="submit" name="guardar">Guardar</button>';
+  echo '</form>';
+?>

@@ -1,3 +1,7 @@
+<?php
+require_once('config.php');
+session_start();
+?>
 <html>
     <head>
         <title>partides</title>
@@ -24,5 +28,9 @@
     </div>
   </div>
 </nav>
+
+<?php
+//posar aqui la info de partides_trobades
+?>
     </body>
 </html>

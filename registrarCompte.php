@@ -5,7 +5,7 @@ require_once('config.php');
 <html>
     <head>
         <title>Registre't</title>
-        <link rel="stylesheet" type="text/css" href="estils.css">
+        <link rel="stylesheet" type="text/css" href="estilsRegistrarIniciar.css">
     </head>
     <body>
         
@@ -13,10 +13,20 @@ require_once('config.php');
         <?php
 if(isset($_POST['crear']))
 {
+$gmail = $_POST['email'];
 $usuari = $_POST['usuariR'];
 $contrasenya = $_POST['contrasenyaR'];
 $confirmaContrasenya = $_POST['confirmaContrasenya'];
- 
+
+$sentencia2 = $db->prepare("SELECT email FROM usuaris WHERE usuari = ? LIMIT 1;");
+$sentencia2->execute([$usuari]);
+
+$numFiles2 = $sentencia2->rowCount(); 
+if($numFiles2 > 0)
+{
+    echo "<script>alert('email ja existeix'); </script>";
+}
+else{
 $sentencia = $db->prepare("SELECT usuari FROM usuaris WHERE usuari = ? LIMIT 1;");
 $sentencia->execute([$usuari]);
 
@@ -28,9 +38,9 @@ if($numFiles > 0)
 else{
 if($contrasenya == $confirmaContrasenya)
 {
-$sql = "INSERT INTO usuaris (usuari, contrasenya) VALUES (?,?)";
+$sql = "INSERT INTO usuaris (email, usuari, contrasenya) VALUES (?,?,?)";
 $stmtinsert = $db->prepare($sql);
-$result = $stmtinsert->execute([$usuari, $contrasenya]);
+$result = $stmtinsert->execute([$gmail, $usuari, $contrasenya]);
 echo "<script>alert('Guardat Correctament'); </script>";
 header("Location: iniciarSessio.php");
 exit();
@@ -41,15 +51,18 @@ else{
 }
 }
 }
+}
 ?>
         <div class="login-container">
 		<h2>Registrar Compte</h2>
 		<form method="post">
-			<label for="username">Nom de usuari</label>
+                        <label>Gmail:</label>
+			<input type="text" name="email" id="username" required>
+			<label>Nom de usuari</label>
 			<input type="text" name="usuariR" id="username" required>
-			<label for="password">Contrasenya</label>
+			<label>Contrasenya</label>
 			<input type="password" name="contrasenyaR" id="password" required>
-                        <label for="password">Confirma contrasenya</label>
+                        <label>Confirma contrasenya</label>
 			<input type="password" name="confirmaContrasenya" id="password" required>
 			<button type="submit" name="crear" value="registrarCompte">Crear compte</button>
                         <p>Ja tens un compte?<a href="iniciarSessio.php">Inicia Sessió</a></p>

@@ -28,15 +28,77 @@ require_once('config.php');
     </div>
   </div>
 </nav>
-<?php     
-//check si l'equip te 7 usuaris ¡ else no se pot unir
+<?php
+//obtenir el nom d'equip
+$EmailUnir = $_SESSION['UsuariEmail']; 
+$co = 'SELECT nom_equip FROM usuaris WHERE email = :email'; 
+$se = $db->prepare($co);
+$se->bindParam(':email', $EmailUnir);
+$se->execute();
+$resultat = $se->fetch(PDO::FETCH_ASSOC);
+$EquipNom = $resultat['nom_equip']; //obtenir el nom_equip del jugador
+
+$cons = 'SELECT id_equip, equips.nom_equip, nom_curt, contrasenya_equip, descripcio FROM equips JOIN usuaris ON equips.nom_equip = :nomEquip WHERE email = :email'; //comprobar si usuari està en un equip
+$sent = $db->prepare($cons);
+$sent->bindParam(':nomEquip', $EquipNom);
+$sent->bindParam(':email', $EmailUnir);
+$sent->execute();
+$result = $sent->fetch(PDO::FETCH_ASSOC);//obtenir info del equip
+
+    if ($resultat === false) {
+echo "<script>alert('buit'); </script>";
+}
+if ($resultat['nom_equip'] === null) { //si usuari no té equip mostra formulari per unir-se o crear(cuidado, si elimines desde phpMyadmin no set null)
+    echo '
+<h1>Crear Equip</h1>
+<form method="post">
+  <label for="nomEquip">Nom equip</label>
+  <input type="text" name="nomE" required>
+  <label for="nomCurt">Nom curt</label>
+  <input type="text" name="nomCurt" required>
+  <label for="password">Contrasenya</label>
+  <input type="password" name="contrasenyaE" required>
+  <label for="descripcio">Descripcio</label>
+  <textarea name="descripcioE"></textarea>
+  <button type="submit" name="crearEquip">Crear equip</button>
+</form>
+<h1>Unir-se a un Equip</h1>
+<form method="post" action = "equip.php">
+  <label for="username">Nom de l\'equip</label>
+  <input type="text" name="NomEquipUsuari" required>
+  <label for="password">Contrasenya de l\'equip</label>
+  <input type="password" name="ContraEquipUsuari" required>
+  <button type="submit" name="UnirseEquip">Unir-se</button>
+</form>
+';
+}
+else{//info equip
+$IdEquip = $result['id_equip'];
+$NomCurt = $result['nom_curt'];
+$ContraEquip = $result['contrasenya_equip'];
+$descripcio = $result['descripcio'];
+
+echo"<h2>Equip $EquipNom</h2> <p>$IdEquip</p><p>$NomCurt</p><p>$descripcio</p><p>$ContraEquip</p>";
+echo '<form method="post" action = "equip.php">
+<button type="submit" name="AbandonarEquip">Abandonar Equip</button>
+</form>';
+if(isset($_POST['AbandonarEquip']))
+{
+$c = ("UPDATE usuaris SET nom_equip = NULL WHERE nom_equip = :EquipNom AND email = :email");
+$Sen = $db->prepare($c);
+$Sen->bindParam(':EquipNom', $EquipNom);
+$Sen->bindParam(':email', $EmailUnir);
+$Sen->execute();
+ header("Location: ".$_SERVER['PHP_SELF']);
+}
+}
+
 if(isset($_POST['UnirseEquip']))//afegir el nom de l'equip a l'usuari que s'ha unit, aixi puc consultar quins usuaris estan dins d'un equip
 {
-$UsuariUnir = $_SESSION['usuariS'];
 $EquipUnir = $_POST['NomEquipUsuari'];
 $ContraUnir = $_POST['ContraEquipUsuari'];
 
-$Consulta = 'SELECT usuari FROM usuaris WHERE nom_equip = :nom_equip';//comprobar que l'equip no està plè (8 usuaris com a màxim)
+$Consulta = 'SELECT email FROM usuaris WHERE nom_equip = :nom_equip';//comprobar que l'equip no està plè (8 usuaris com a màxim)
 $Sentencia = $db->prepare($Consulta);
 $Sentencia->bindParam(':nom_equip', $EquipUnir);
 $Sentencia->execute();
@@ -55,24 +117,25 @@ $sen->bindParam(':contrasenya_equip', $ContraUnir);
 $sen->execute();
 $numeroFiles = $sen->rowCount(); 
 
-if($numeroFiles >= 0)
+if($numeroFiles > 0)
 {
-$consulta = 'UPDATE usuaris SET nom_equip = :nom_equip WHERE usuari = :usuari';
+$consulta = 'UPDATE usuaris SET nom_equip = :nom_equip WHERE email = :email';//unir
 $s = $db->prepare($consulta);
 $s->bindParam(':nom_equip', $EquipUnir);
-$s->bindParam(':usuari', $UsuariUnir);
+$s->bindParam(':email', $EmailUnir);
 $s->execute();
 echo "<script>alert('Unit correctament a $EquipUnir'); </script>";
+ header("Location: ".$_SERVER['PHP_SELF']);
 }
 else{
     echo "<script>alert('Contrasenya incorrecta'); </script>";
 }
 }
 }
-
 if(isset($_POST["crearEquip"])) //crear equip
 {
 $nomEquip = $_POST['nomE'];
+$NomCurt = $_POST['nomCurt'];
 $contrasenyaEquip = $_POST['contrasenyaE'];
 $descripcioEquip = $_POST['descripcioE'];
 
@@ -85,64 +148,14 @@ if($numFiles > 0)
     echo "<script>alert('El nom de l\'equip ja existeix'); </script>";
 }
 else{
-    $sql = "INSERT INTO equips (nom_equip, contrasenya_equip, descripcio) VALUES (?,?,?)";
+    $sql = "INSERT INTO equips (nom_equip, nom_curt, contrasenya_equip, descripcio) VALUES (?,?,?,?)";
 $stmtinsert = $db->prepare($sql);
-$result = $stmtinsert->execute([$nomEquip, $contrasenyaEquip, $descripcioEquip]);
+$result = $stmtinsert->execute([$nomEquip, $NomCurt, $contrasenyaEquip, $descripcioEquip]);
 echo "<script>alert('Equip creat'); </script>";
-header("Location: equip.php");
+ header("Location: ".$_SERVER['PHP_SELF']);
 exit();
 }
 }
-
 ?>
-
-<?php
-$cons = 'SELECT * FROM usuaris WHERE nom_equip = :nom_equip AND usuari = :usuari'; //nomes mostrar formulari si l'usuari no te equip
-$sent = $db->prepare($cons);
-$sent->bindParam(':nom_equip', $EquipUnir);
-$sent->bindParam(':usuari', $UsuariUnir);
-$sent->execute();
-$numFiles = $sent->rowCount(); 
-
-if($numFiles == 0)
-{
-    echo '
-<h1>Crear Equip</h1>
-<form method="post">
-  <label for="username">Nom equip</label>
-  <input type="text" name="nomE" id="username" required>
-  <label for="password">Contrasenya</label>
-  <input type="password" name="contrasenyaE" id="password" required>
-  <label for="password">Descripcio</label>
-  <textarea name="descripcioE"></textarea>
-  <button type="submit" name="crearEquip">Crear equip</button>
-</form>
-<h1>Unir-se a un Equip</h1>
-<form method="post">
-  <label for="username">Nom de l\'equip</label>
-  <input type="text" name="NomEquipUsuari" required>
-  <label for="password">Contrasenya de l\'equip</label>
-  <input type="password" name="ContraEquipUsuari" required>
-  <button type="submit" name="UnirseEquip">Unir-se</button>
-</form>
-';
-}
-?>
-<form method="POST">
-    <label for="group">Seleccionar grupo:</label>
-    <select name="group" id="group">
-        <?php
-            //llistar equips
-$pdo = new PDO("mysql:host=$nomservidor;dbname=$db_nom", $db_usuari, $db_contrasenya);
-            $stmt = $pdo->prepare('SELECT * FROM equips');
-            $stmt->execute();
-
-            foreach ($stmt as $row) {
-                echo '<option value="'.$row['id_equip'].'">'.$row['nom_equip'].'</option>';
-            }
-        ?>
-    </select>
-</form>
     </body>
 </html>
-

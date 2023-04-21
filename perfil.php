@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 session_start();
 ?>
 <html>
@@ -28,31 +29,45 @@ session_start();
     </div>
   </div>
 </nav>
-<div class="perfil-container">
-    
-   
-    
-		<div class="perfil-header">
-                    
 
+<div class="perfil-container">
+		<div class="perfil-header">
 			<h2>Configuració d'usuari</h2>
-			<a href="tancarSessio.php" class="cerrar-sesion">Tancar Sessió</a>
 		</div>
 		<div class="perfil-content">
                     <h3>Informació de perfil</h3>
                     <?php
-                    echo"Nom d'usuari: $_SESSION[usuariS] </br>";
+                    echo"Nom d'usuari: $_SESSION[Usuari] </br>";
                     echo "Id d'usuari: $_SESSION[UsuariId]</br>";
+                      echo"$_SESSION[UsuariEmail]</br>";
                     ?>
+                    <form action="perfil.php" method="post">
+                    <button type="submit" name="eliminar_compte" onclick="return confirm('¿Estas segur d\'eliminar la teva compta?')">Eliminar cuenta</button>
+                    </form>
+                     <form action="perfil.php" method="post">
+                    <button type="submit" name="tancar_sessio">Tancar Sessio</button>
+                    </form>
 		</div>
-	</div>
+                </div>
 <?php
-//id
-//usuari
-//email potser
-//cambiar contrasenya
-//confirmar contrasenya
-//tancar sessio
+$emailE = $_SESSION['UsuariEmail']; //tancar sessió
+if(isset($_POST['tancar_sessio']))
+{
+session_unset();
+session_destroy();
+header("Location: iniciarSessio.php");
+exit();
+}
+if (isset($_POST['eliminar_compte'])) { //eliminar compte
+$sql = "DELETE FROM usuaris WHERE email = :email";
+$stmt = $db->prepare($sql);
+$stmt->bindParam(':email', $emailE);
+$stmt->execute();
+session_unset();
+session_destroy();
+header('Location: menu.php');
+exit();
+}
 ?>
 </body>
 </html>
