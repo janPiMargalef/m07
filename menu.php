@@ -36,7 +36,7 @@ if(isset($_SESSION['UsuariEmail'])) // afegir aixo a totes les pàgines, per si 
 { echo"$_SESSION[Usuari]</br>";
    echo"$_SESSION[UsuariEmail]</br>";
     echo "$_SESSION[UsuariId]";
-    
+   
 }
  else {
     

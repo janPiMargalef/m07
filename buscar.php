@@ -30,77 +30,148 @@ require_once('config.php');
   </div>
 </nav>
 <?php
-$consulta5 = "SELECT dia, hora, mapa, nom_equip FROM ofertes ORDER BY dia ASC, hora ASC";//llistar ofertes
-$sentencia5 = $db->prepare($consulta5);
-$sentencia5->execute();
+$NomEquipCrear = $_SESSION['UsuariEquip'];
+$ImatgeRuta = $_SESSION['SesionImatge'];
 
+$consulta5 = "SELECT id_oferta, dia, hora, mapa, nom_equip, imatge_equip FROM ofertes WHERE nom_equip != :nom_equip ORDER BY dia ASC, hora ASC";//llistar ofertes
+$sentencia_altres_equips = $db->prepare($consulta5);
+$sentencia_altres_equips->bindParam(':nom_equip', $NomEquipCrear);
+$sentencia_altres_equips->execute();
 
-
+$consulta6 = "SELECT id_oferta, dia, hora, mapa, nom_equip, imatge_equip FROM ofertes WHERE nom_equip = :nom_equip ORDER BY dia ASC, hora ASC";//llistar ofertes
+$sentencia_equips = $db->prepare($consulta6);
+$sentencia_equips->bindParam(':nom_equip', $NomEquipCrear);
+$sentencia_equips->execute();
 
 if(isset($_POST['crearOferta']))//crear oferta
 {
 $dia = $_POST['dia'];
 $hora = $_POST['hora'];
 $mapa = $_POST['mapa'];
-$NomEquipCrear = $_SESSION['UsuariEquip'];
 
-$consulta4 = "INSERT INTO ofertes (dia, hora, mapa, nom_equip) VALUES (:dia, :hora, :mapa, :nom_equip)";
-$sentencia4 = $db->prepare($consulta4); //proxim que he de comprobar es si funciona llistarlos en ordre, sino pasarlos a diferent format suposo XD
 
+$consulta4 = "INSERT INTO ofertes (dia, hora, mapa, nom_equip, imatge_equip) VALUES (:dia, :hora, :mapa, :nom_equip, :imatge_equip)";
+$sentencia4 = $db->prepare($consulta4); 
 $sentencia4->bindParam(':dia', $dia);
 $sentencia4->bindParam(':hora', $hora);
 $sentencia4->bindParam(':mapa', $mapa);
 $sentencia4->bindParam(':nom_equip', $NomEquipCrear);
-// Ejecutar la consulta
+$sentencia4->bindParam(':imatge_equip', $ImatgeRuta);
 $sentencia4->execute();
  header("Location: ".$_SERVER['PHP_SELF']);
+ exit();
 }
-if(isset($_GET['nom_equip'], $_GET['dia'], $_GET['hora'], $_GET['mapa'])) {
-    
+if(isset($_POST['acceptar_oferta'])) {//acceptar oferta, enviar la info (post) a la pagina partides
+
 }
+if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar oferta
+     $id_oferta = $_POST['id_oferta'];
+
+    $stmt_eliminar_oferta = $db->prepare("DELETE FROM ofertes WHERE id_oferta = :id");
+    $stmt_eliminar_oferta->bindParam(':id', $id_oferta);
+    $stmt_eliminar_oferta->execute();
+
+    // Redirigir de vuelta a la página de ofertas
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
 ?>
-<div class="container">
-<table>
-  <thead>
-    <tr>
+
+    <div class="container">
+    <h2>Ofertes d'altres equips</h2>
+    <table>
+       <tr>
+      <th></th>
       <th>Equip</th>
       <th>Dia</th>
       <th>Hora</th>
       <th>Mapa</th>
     </tr>
-  </thead>
-  <tbody>
-    <?php while ($registro5 = $sentencia5->fetch(PDO::FETCH_ASSOC)) { //al donarli al boto, es guarda en la bd el nom d'equip que accepta i el acceptat, despres, al iniciar sessio comprobar si aquell nom_equip esta dins de partides trobades, si es aixi, mostrar info en partides'?>
-      <tr>
-        <td><?php echo $registro5['nom_equip']; ?></td>
-        <td><?php echo date('d/m', strtotime($registro5['dia'])); ?></td>
-        <td><?php echo date('H:i', strtotime($registro5['hora'])); ?></td>
-        <td><?php echo $registro5['mapa']; ?></td> 
-       
-        <td><a href="partides.php?nom_equip=<?php echo $registro5['nom_equip']; ?>&dia=<?php echo $registro5['dia']; ?>&hora=<?php echo $registro5['hora']; ?>&mapa=<?php echo $registro5['mapa']; ?>">
-                <button type="button" name="acceptar_oferta">Acceptar Oferta</button>
-            </a></td>
-      </tr>
-    <?php } ?>
+        <tbody>
+        <?php
+        while ($registro5 = $sentencia_altres_equips->fetch(PDO::FETCH_ASSOC)) {
+          echo '<tr>
+        <td>
+            <img src="'.$registro5['imatge_equip'].'" alt="Perfil" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
+        </td>
+        <td>'.$registro5['nom_equip'].'</td>
+        <td>'.date('d/m', strtotime($registro5['dia'])).'</td>
+        <td>'.date('H:i', strtotime($registro5['hora'])).'</td>
+        <td>'.$registro5['mapa'].'</td> 
+            <td>
+        <form action="partides.php" method="post">
+                    <input type="hidden" name="id_oferta" value="'.$registro5['id_oferta'].'">
+                    <button type="submit" name="acceptar_oferta">Acceptar Oferta</button>
+                </form>
+                </td>
+    </tr>';
+  
+        }
+        ?>
+        </tbody>
+    </table>
+    </div>
+<div class="container">
+    <br>
+    <br>
+    <h2>Ofertes del teu equip</h2>
+    <table>
+       <tr>
+      <th></th>
+      <th>Equip</th>
+      <th>Dia</th>
+      <th>Hora</th>
+      <th>Mapa</th>
+    </tr>
+        <tbody>
+        <?php
+        while ($registro5 = $sentencia_equips->fetch(PDO::FETCH_ASSOC)) {
+            echo '<tr>
+        <td>
+            <img src="'.$registro5['imatge_equip'].'" alt="Perfil" width="50" height="50" style="border-radius: 50%; object-fit: cover;">
+        </td>
+        <td>'.$registro5['nom_equip'].'</td>
+        <td>'.date('d/m', strtotime($registro5['dia'])).'</td>
+        <td>'.date('H:i', strtotime($registro5['hora'])).'</td>
+        <td>'.$registro5['mapa'].'</td> 
+        <td>
+                <form action="buscar.php" method="post">
+                    <input type="hidden" name="id_oferta" value="'.$registro5['id_oferta'].'">
+                    <button type="submit" name="eliminar_oferta">Eliminar Oferta</button>
+                </form>
+            </td>
+    </tr>';
+
+        }
+        ?>
+        </tbody>
+    </table>
+
+
+
+
+
   </tbody>
 </table>
 </div>
 <form method="post" action="buscar.php" class="formulario">
-    <label for="dia">Día:</label>
-  <input type="date" name="dia" required>
+  <label for="dia">Día:</label>
+  <input type="date" name="dia" min="<?php echo date('Y-m-d'); ?>" required> <!-- No es poden seleccionar dies que ja han passat -->
   </br>
   <label for="hora">Hora:</label>
   <input type="time" name="hora" required>
   </br>
-      <label for="mapa">Mapa:</label>
-      <select name ="mapa">
-        <option value="Dust II">Dust II</option>
-        <option value="Mirage">Mirage</option>
-        <option value="Inferno">Inferno</option>
-        <option value="Nuke">Nuke</option>
-        <option value="Overpass">Overpass</option>
-      </select>
-      <input type="submit" name="crearOferta" value="crea">
-    </form>
+  <label for="mapa">Mapa:</label>
+  <select name="mapa">
+    <option value="Dust II">Dust II</option>
+    <option value="Mirage">Mirage</option>
+    <option value="Inferno">Inferno</option>
+    <option value="Nuke">Nuke</option>
+    <option value="Overpass">Overpass</option>
+  </select>
+  <input type="submit" name="crearOferta" value="crea">
+</form>
+
     </body>
 </html>

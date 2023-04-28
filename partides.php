@@ -24,13 +24,61 @@ session_start();
         <a class="nav-link active" href="buscar.php">Buscar</a>
         <a class="nav-link active" href="partides.php">Partides</a>
         <a class="nav-link active" href="perfil.php">Perfil</a>
+        <form action="buscar_equip.php" method="post" class="buscador">
+            <input type="text" name="nom_equip_buscar" id="nom_equip_buscar" placeholder="Buscar equip" required>
+            <button type="submit">Buscar</button>
+        </form>
       </div>
     </div>
   </div>
 </nav>
 
 <?php
-//posar aqui la info de partides_trobades
+if(isset($_POST['acceptar_oferta'])) {//fer select de tot de quan id = $_POST i insertar-ho to a p_t
+$id_oferta = $_POST['id_oferta'];     
+    
+$consulta_partides = "SELECT dia, hora, mapa, nom_equip, imatge_equip FROM ofertes WHERE id_oferta= :id_oferta";//obtenir info de oferta acceptada
+$sentencia_partides = $db->prepare($consulta_partides);
+$sentencia_partides->bindParam(':id_oferta', $id_oferta);
+$sentencia_partides->execute();
+$resultat_ofertes = $sentencia_partides->fetch(PDO::FETCH_ASSOC);
+
+$ofertes_dia = $resultat_ofertes['dia'];
+$ofertes_hora = $resultat_ofertes['hora'];
+$ofertes_mapa = $resultat_ofertes['mapa'];
+$ofertes_equip_acceptat = $resultat_ofertes['nom_equip'];
+$ofertes_imatge_equip = $resultat_ofertes['imatge_equip'];
+$ofertes_equip_accepta = $_SESSION['UsuariEquip'];
+//arreglar comprova
+$consulta_comprova = "SELECT * FROM partides_trobades WHERE id_oferta= :id_oferta AND nom_equip_accepta = :nom_equip_accepta";//comprovar que la oferta no ha sigut acceptada ja  per aquell equip
+$sent_comprova = $db->prepare($consulta_comprova); 
+$sent_comprova->bindParam(':id_oferta', $id_oferta);
+$sent_comprova->bindParam(':nom_equip_accepta', $ofertes_equip_accepta);
+$sent_comprova->execute();
+$Files_comprova = $sent_comprova->rowCount(); 
+
+if($Files_comprova > 0)
+{
+    echo "<script>alert('Oferta ja està acceptada'); </script>";
+    header("Location:buscar.php");
+    exit();
+}
+else{
+
+$consulta_afegir = "INSERT INTO partides_trobades (mapa, dia_p, hora_p, id_oferta, nom_equip_acceptat, nom_equip_accepta) VALUES (:mapa, :dia, :hora, :id_oferta, :nom_equip_acceptat, :nom_equip_accepta)";
+$sent_p = $db->prepare($consulta_afegir); 
+$sent_p->bindParam(':mapa', $ofertes_mapa);
+$sent_p->bindParam(':dia', $ofertes_dia);
+$sent_p->bindParam(':hora', $ofertes_hora);
+$sent_p->bindParam(':id_oferta', $id_oferta);
+$sent_p->bindParam(':nom_equip_acceptat', $ofertes_equip_acceptat);
+$sent_p->bindParam(':nom_equip_accepta', $ofertes_equip_accepta);
+$sent_p->execute();    
+header("Location:buscar.php");
+exit();
+}
+//llistar partides de lequip de lusuari
+}
 ?>
     </body>
 </html>

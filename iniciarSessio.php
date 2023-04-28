@@ -9,6 +9,13 @@ require_once('config.php');
     </head>
     <body>
 <?php
+$dataHoraActual = date('Y-m-d H:i:s'); //iniciar sessio(pagina mes visitada), per eliminar ofertes inferiors a la actualitat
+
+$stmt_eliminar_ofertes_pasades = $db->prepare("DELETE FROM ofertes WHERE CONCAT(dia, ' ', hora) < :dataHoraActual");
+$stmt_eliminar_ofertes_pasades->bindParam(':dataHoraActual', $dataHoraActual);
+$stmt_eliminar_ofertes_pasades->execute();
+
+
 if(isset($_POST["iniciar"]))
 {
 $emailS = $_POST['emailS'];
@@ -46,6 +53,19 @@ $_SESSION['Usuari'] = $Usuari;
 $_SESSION['UsuariEmail'] = $UsuariEmail;
 $_SESSION["contrasenyaS"] = $contrasenyaS;
     
+
+$consulta8 = 'SELECT imatge FROM equips WHERE nom_equip = :nom_equip'; 
+$sentencia8 = $db->prepare($consulta8);
+$sentencia8->bindParam(':nom_equip', $UsuariEquip);
+$sentencia8->execute();
+$resultat8 = $sentencia8->fetch(PDO::FETCH_ASSOC); 
+$numFiles8 = $sentencia8->rowCount(); 
+
+if($numFiles8 > 0)
+{
+$SesionImatge = $resultat8['imatge'];
+$_SESSION['SesionImatge'] = $SesionImatge;  
+}
     header("Location:menu.php");//header menu i amb session_start recopilar info del user
     exit();
 }

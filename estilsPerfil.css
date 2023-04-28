@@ -11,11 +11,6 @@ body {
 	max-width: 800px;
 }
 
-.perfil-header {
-	display: flex;
-	align-items: center;
-}
-
 .avatar {
 	width: 100px;
 	height: 100px;
@@ -54,4 +49,5 @@ th {
 td {
 	vertical-align: top;
 }
+
 

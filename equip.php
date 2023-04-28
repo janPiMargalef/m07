@@ -5,6 +5,21 @@ require_once('config.php');
 <html>
     <head>
         <title>equip</title>
+        <style>
+  .perfil-img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.perfil-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+</style>
     </head>
     <body>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -38,7 +53,7 @@ $se->execute();
 $resultat = $se->fetch(PDO::FETCH_ASSOC);
 $EquipNom = $resultat['nom_equip']; //obtenir el nom_equip del jugador
 
-$cons = 'SELECT id_equip, equips.nom_equip, nom_curt, contrasenya_equip, descripcio FROM equips JOIN usuaris ON equips.nom_equip = :nomEquip WHERE email = :email'; //comprobar si usuari està en un equip
+$cons = 'SELECT id_equip, equips.nom_equip, nom_curt, contrasenya_equip, descripcio, imatge FROM equips JOIN usuaris ON equips.nom_equip = :nomEquip WHERE email = :email'; //comprobar si usuari està en un equip
 $sent = $db->prepare($cons);
 $sent->bindParam(':nomEquip', $EquipNom);
 $sent->bindParam(':email', $EmailUnir);
@@ -77,6 +92,8 @@ $IdEquip = $result['id_equip'];
 $NomCurt = $result['nom_curt'];
 $ContraEquip = $result['contrasenya_equip'];
 $descripcio = $result['descripcio'];
+$RutaImatge = $result['imatge'];
+$_SESSION['RutaImatge'] = $RutaImatge;    
 
 echo"<h2>Equip $EquipNom</h2> <p>$IdEquip</p><p>$NomCurt</p><p>$descripcio</p><p>$ContraEquip</p>";
 echo '<form method="post" action = "equip.php">
@@ -90,6 +107,8 @@ $Sen->bindParam(':EquipNom', $EquipNom);
 $Sen->bindParam(':email', $EmailUnir);
 $Sen->execute();
  header("Location: ".$_SERVER['PHP_SELF']);
+ exit();
+ 
 }
 }
 
@@ -126,6 +145,7 @@ $s->bindParam(':email', $EmailUnir);
 $s->execute();
 echo "<script>alert('Unit correctament a $EquipUnir'); </script>";
  header("Location: ".$_SERVER['PHP_SELF']);
+ $_SESSION['UsuariEquip'] = $EquipUnir;
 }
 else{
     echo "<script>alert('Contrasenya incorrecta'); </script>";
@@ -156,6 +176,42 @@ echo "<script>alert('Equip creat'); </script>";
 exit();
 }
 }
+
+
+if (isset($_POST['subir_imagen'])) {
+  $nom_imatge = $_FILES['imagen']['name'];
+  $tipo_imatge = $_FILES['imagen']['type'];
+  $tamano_imatge = $_FILES['imagen']['size'];
+  $tmp_imatge = $_FILES['imagen']['tmp_name'];
+
+  
+  if ($tipo_imatge == "image/jpeg" || $tipo_imatge == "image/jpg" || $tipo_imatge == "image/png") {
+    
+    $carpeta_imatges = "imatges/";
+   
+    $nom_imatge = uniqid() . "_" . $nom_imatge;
+
+    move_uploaded_file($tmp_imatge, $carpeta_imatges . $nom_imatge);
+    $ruta_imatge = $carpeta_imatges . $nom_imatge;
+    $stmt6 = $db->prepare("UPDATE equips SET imatge = :imatge WHERE nom_equip = :nom_equip");
+    $stmt6->bindParam(':imatge', $ruta_imatge);
+    $stmt6->bindParam(':nom_equip', $EquipNom);
+    $stmt6->execute();
+    header("Location: ".$_SERVER['PHP_SELF']);
+  }
+}
 ?>
+<?php
+echo "$_SESSION[RutaImatge]";
+echo '<div class="perfil-img">';
+echo '<img src="' . $RutaImatge . '">';
+echo '</div>';
+?>
+<form method="POST" action="equip.php" enctype="multipart/form-data">
+  <label>Seleccionar imatge</label>
+  <input type="file" name="imagen">
+  <input type="submit" name="subir_imagen" value="Subir imagen">
+</form>
+
     </body>
 </html>
