@@ -3,6 +3,35 @@
   <head>
     <meta charset="UTF-8">
     <title>Encuesta de hora</title>
+    
+    <style>
+    
+.tablinks {
+  background-color: #f1f1f1;
+  color: black;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.tablinks:hover {
+  background-color: #ddd;
+}
+
+.tabcontent {
+  display: none;
+  padding: 20px;
+  border-top: none;
+}
+
+
+    </style>
   </head>
   <body>
    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -26,27 +55,41 @@
     </div>
   </div>
 </nav>
-<div class="container mt-5">
-    <ul class="nav nav-tabs" id="myTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Información del equipo</a>
-        </li>
-        <li class="nav-item" role="presentation">
-            <a class="nav-link" id="jugadores-tab" data-bs-toggle="tab" href="#jugadores" role="tab" aria-controls="jugadores" aria-selected="false">Jugadores</a>
-        </li>
-    </ul>
-    <div class="tab-content" id="myTabsContent">
-        <div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
-            <h3>Información del equipo</h3>
-            <p>Aquí va la información sobre el equipo.</p>
-        </div>
-        <div class="tab-pane fade" id="jugadores" role="tabpanel" aria-labelledby="jugadores-tab">
-            <h3>Jugadores</h3>
-            <p>Aquí va la información sobre los jugadores.</p>
-        </div>
-    </div>
+
+
+
+<button class="tablinks" onclick="openTab(event, 'Equip')">Equip</button>
+<button class="tablinks" onclick="openTab(event, 'Jugadors')">Jugadors</button>
+
+<div id="Equip" class="tabcontent">
+  <h3>Informació de l'equip</h3>
+  <p>Contingut relacionat amb l'equip.</p>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-M7za8b6UvsaoJkl2zBf13E5zjT9XzV9XpJ3YPzD1v63fE2j1mMvu8bORWGT7eMZA" crossorigin="anonymous"></script>
-      
+
+<div id="Jugadors" class="tabcontent">
+  <h3>Jugadors</h3>
+  <p>Contingut relacionat amb els jugadors.</p>
+</div>
+<script>
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Obre la pestanya "Equip" per defecte en carregar la pàgina
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementsByClassName("tablinks")[0].click();
+});
+</script>
+
   </body>
 </html>

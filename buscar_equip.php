@@ -8,15 +8,15 @@ require_once('config.php');
         <link rel="stylesheet" type="text/css" href="estilsOfertes.css">
         <script>
         function buscarEquipo() {
-            var nombreEquipo = document.getElementById("nombre_equipo").value;
-            if (nombreEquipo.length > 0) {
+            var nomEquip = document.getElementById("nom_equip_buscar").value;
+            if (nomEquip.length > 0) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         document.getElementById("resultados").innerHTML = this.responseText;
                     }
                 };
-                xhttp.open("GET", "buscar_equipo.php?nombre_equipo=" + nombreEquipo, true);
+                xhttp.open("POST", "buscar_equip.php?nom_equip_buscar=" + nombreEquipo, true);
                 xhttp.send();
             }
         }
@@ -35,12 +35,12 @@ require_once('config.php');
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem; /* Ajusta el espacio desde la parte superior */
-        font-size: 1.5rem; /* Ajusta el tamaño de la fuente según sea necesario */
+        padding-top: 2rem;
+        font-size: 1.5rem; 
     }
 
     details {
-        width: 80%; /* Ajusta el ancho según sea necesario */
+        width: 80%; 
         margin-bottom: 1rem;
     }
 
@@ -121,12 +121,12 @@ foreach ($resultats_busqueda as $fila) {
     echo "</ul>";
     echo "</details>";
 }
-echo '</div>';
+echo '</div> <br> <br>';
 
 
     }
     else{
-         echo "<p>No s'ha trobat cap equip amb aquest nom.</p>";
+         echo"no existeix";
     }
 }
 ?>

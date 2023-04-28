@@ -7,7 +7,7 @@ require_once('config.php');
         <title>buscar partida</title>
         <link rel="stylesheet" type="text/css" href="estilsOfertes.css">
     </head>
-    <body>
+    <body>     
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container-fluid">
@@ -32,12 +32,12 @@ require_once('config.php');
 <?php
 $NomEquipCrear = $_SESSION['UsuariEquip'];
 $ImatgeRuta = $_SESSION['SesionImatge'];
-
+//ofertes de tots els equips
 $consulta5 = "SELECT id_oferta, dia, hora, mapa, nom_equip, imatge_equip FROM ofertes WHERE nom_equip != :nom_equip ORDER BY dia ASC, hora ASC";//llistar ofertes
 $sentencia_altres_equips = $db->prepare($consulta5);
 $sentencia_altres_equips->bindParam(':nom_equip', $NomEquipCrear);
 $sentencia_altres_equips->execute();
-
+//consulta per les ofertes del teu equip
 $consulta6 = "SELECT id_oferta, dia, hora, mapa, nom_equip, imatge_equip FROM ofertes WHERE nom_equip = :nom_equip ORDER BY dia ASC, hora ASC";//llistar ofertes
 $sentencia_equips = $db->prepare($consulta6);
 $sentencia_equips->bindParam(':nom_equip', $NomEquipCrear);
@@ -61,9 +61,6 @@ $sentencia4->execute();
  header("Location: ".$_SERVER['PHP_SELF']);
  exit();
 }
-if(isset($_POST['acceptar_oferta'])) {//acceptar oferta, enviar la info (post) a la pagina partides
-
-}
 if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar oferta
      $id_oferta = $_POST['id_oferta'];
 
@@ -77,7 +74,23 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
 }
 
 ?>
-
+<form method="post" action="buscar.php" class="formulari">
+  <label for="dia">Día:</label>
+  <input type="date" name="dia" min="<?php echo date('Y-m-d'); ?>" required> <!-- No es poden seleccionar dies que ja han passat -->
+  </br>
+  <label for="hora">Hora:</label>
+  <input type="time" name="hora" required>
+  </br>
+  <label for="mapa">Mapa:</label>
+  <select name="mapa">
+    <option value="Dust II">Dust II</option>
+    <option value="Mirage">Mirage</option>
+    <option value="Inferno">Inferno</option>
+    <option value="Nuke">Nuke</option>
+    <option value="Overpass">Overpass</option>
+  </select>
+  <input type="submit" name="crearOferta" value="crea">
+</form>
     <div class="container">
     <h2>Ofertes d'altres equips</h2>
     <table>
@@ -155,23 +168,7 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
   </tbody>
 </table>
 </div>
-<form method="post" action="buscar.php" class="formulario">
-  <label for="dia">Día:</label>
-  <input type="date" name="dia" min="<?php echo date('Y-m-d'); ?>" required> <!-- No es poden seleccionar dies que ja han passat -->
-  </br>
-  <label for="hora">Hora:</label>
-  <input type="time" name="hora" required>
-  </br>
-  <label for="mapa">Mapa:</label>
-  <select name="mapa">
-    <option value="Dust II">Dust II</option>
-    <option value="Mirage">Mirage</option>
-    <option value="Inferno">Inferno</option>
-    <option value="Nuke">Nuke</option>
-    <option value="Overpass">Overpass</option>
-  </select>
-  <input type="submit" name="crearOferta" value="crea">
-</form>
+
 
     </body>
 </html>

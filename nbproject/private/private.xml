@@ -4,19 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/opt/lampp/htdocs/Projectem07/menu.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/README.md</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/registrarCompte.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/provesPHP.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/iniciarSessio.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/estilsPerfil.css</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/estilsRegistrarIniciar.css</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/provesCSS.css</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/config.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/equip.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/buscar_equip.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/estilsOfertes.css</file>
             <file>file:/opt/lampp/htdocs/Projectem07/partides.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/deploy.php</file>
+            <file>file:/opt/lampp/htdocs/Projectem07/estilsOfertes.css</file>
+            <file>file:/opt/lampp/htdocs/Projectem07/buscar.php</file>
+            <file>file:/opt/lampp/htdocs/Projectem07/iniciarSessio.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/provesHTML.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/perfil.php</file>
         </group>

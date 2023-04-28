@@ -6,6 +6,32 @@ require_once('config.php');
     <head>
         <title>equip</title>
         <style>
+          
+.tablinks {
+  background-color: #f1f1f1;
+  color: black;
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.tablinks:hover {
+  background-color: #ddd;
+}
+
+.tabcontent {
+  display: none;
+  padding: 20px;
+  border-top: none;
+}
+
+
   .perfil-img {
   width: 150px;
   height: 150px;
@@ -95,10 +121,7 @@ $descripcio = $result['descripcio'];
 $RutaImatge = $result['imatge'];
 $_SESSION['RutaImatge'] = $RutaImatge;    
 
-echo"<h2>Equip $EquipNom</h2> <p>$IdEquip</p><p>$NomCurt</p><p>$descripcio</p><p>$ContraEquip</p>";
-echo '<form method="post" action = "equip.php">
-<button type="submit" name="AbandonarEquip">Abandonar Equip</button>
-</form>';
+
 if(isset($_POST['AbandonarEquip']))
 {
 $c = ("UPDATE usuaris SET nom_equip = NULL WHERE nom_equip = :EquipNom AND email = :email");
@@ -201,17 +224,57 @@ if (isset($_POST['subir_imagen'])) {
   }
 }
 ?>
-<?php
+
+<button class="tablinks" onclick="openTab(event, 'Equip')">Equip</button>
+<button class="tablinks" onclick="openTab(event, 'Jugadors')">Jugadors</button>
+
+<div id="Equip" class="tabcontent">
+  <h3>Informació de l'equip</h3>
+<?php  
+echo"<h2>Equip $EquipNom</h2> <p>$IdEquip</p><p>$NomCurt</p><p>$descripcio</p><p>$ContraEquip</p>";
+echo '<form method="post" action = "equip.php">
+<button type="submit" name="AbandonarEquip">Abandonar Equip</button>
+</form>';
 echo "$_SESSION[RutaImatge]";
 echo '<div class="perfil-img">';
 echo '<img src="' . $RutaImatge . '">';
 echo '</div>';
 ?>
+
+
+
 <form method="POST" action="equip.php" enctype="multipart/form-data">
   <label>Seleccionar imatge</label>
   <input type="file" name="imagen">
   <input type="submit" name="subir_imagen" value="Subir imagen">
 </form>
+
+</div>
+
+<div id="Jugadors" class="tabcontent">
+  <h3>Jugadors</h3>
+  <p>Contingut relacionat amb els jugadors.</p>
+</div>
+<script>
+function openTab(evt, tabName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+// Obre la pestanya "Equip" per defecte en carregar la pàgina
+document.addEventListener("DOMContentLoaded", function() {
+  document.getElementsByClassName("tablinks")[0].click();
+});
+</script>
 
     </body>
 </html>
