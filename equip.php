@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once('config.php');
@@ -5,16 +6,34 @@ require_once('config.php');
 <html>
     <head>
         <title>equip</title>
+        <link rel="stylesheet" type="text/css" href="estilsPerfil.css">
         <style>
-          
+           body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('map.webp');
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -1;
+}
 .tablinks {
+    
   background-color: #f1f1f1;
-  color: black;
   border: none;
   text-align: center;
-  text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 20px;
   margin: 5px;
   cursor: pointer;
   padding: 10px 15px;
@@ -29,6 +48,7 @@ require_once('config.php');
   display: none;
   padding: 20px;
   border-top: none;
+  margin-bottom: 25%;
 }
 
 
@@ -44,31 +64,169 @@ require_once('config.php');
   height: 100%;
   object-fit: cover;
 }
+header {
+    background-color: #1a1a1a;
+    padding: 1rem;
+  }
+  nav {
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+ 
+    align-items: center;
+  }
+
+  nav a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+   .buscador {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    margin-top: 0.5%;
+    padding: 4px 8px;
+    margin-left: 50%;
+  }
+  #nom_equip_buscar {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+    height: 35px;
+  }
+
+  
+
+  .boto {
+    border: none;
+    background-color: #FF6600;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin-left: 2%;
+  }
+
+  .container-principal {
+    flex-grow: 1;
+  }
+  
+  .boto:hover {
+    background-color: #c27100;
+  }
+  .footer {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    
+  }
+  .logo {
+      max-height: 150px;
+      max-width: 200px;
+  }
+  
+  .readonly-input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-bottom: 1px dotted #000;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-container {
+    width: 100%;
+}
+
+.perfil-container .boto-container {
+    display: flex;
+    margin-left: 20%;
+    gap: 25px;
+}
+table {
+  border-collapse: collapse;
+  width: 50%;
+  margin: auto;
+  margin-top: 2%;
+  background-color: #f2f2f2;
+}
+
+
+
+th, td {
+  padding: 25px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+td:hover {
+    background-color: #ffffff;
+}
+
+.perfil-container button {
+    padding: 8px 16px;
+    border: none;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 4%;
+}
+
+
+.perfil-container button:hover {
+    opacity: 0.8;
+}
+
+button[name="actualizar_perfil"] {
+    background-color: #4CAF50;
+    color: white;
+}
+
+button[name="eliminar_compte"] {
+    background-color: #f44336; 
+    color: white;
+}
+
+button[name="tancar_sessio"] {
+    background-color: #FFA500;
+    color: white;
+}
 
 </style>
     </head>
     <body>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="menu.php">Menu</a>
-        <a class="nav-link active" href="equip.php">Equip</a>
-        <!--a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled">Disabled</a>
-        <a class="nav-link disabled">Disabled</a>-->
-        <a class="nav-link active" href="buscar.php">Buscar</a>
-        <a class="nav-link active" href="partides.php">Partides</a>
-        <a class="nav-link active" href="perfil.php">Perfil</a>
-      </div>
-    </div>
-  </div>
-</nav>
+         <div class="container-principal">
+<header>
+    <a href="menu.php"><img src="logo.png" class="logo"></a>
+</header>
+  <nav>
+    <a href="menu.php">Menú</a>
+    <a href="equip.php">Equip</a>
+    <a href="buscar.php">Buscar</a>
+    <a href="partides.php">Partides</a>
+    <a href="perfil.php">Perfil</a>
+    <form action="buscar_equip.php" method="post" class="buscador">
+            <input type="text" name="nom_equip_buscar" id="nom_equip_buscar" placeholder="Buscar equip" required>
+            <button type="submit" class ="boto">Buscar</button>
+        </form>
+  </nav>
 <?php
 //obtenir el nom d'equip
 $EmailUnir = $_SESSION['UsuariEmail']; 
@@ -122,7 +280,7 @@ $RutaImatge = $result['imatge'];
 $_SESSION['RutaImatge'] = $RutaImatge;    
 
 
-if(isset($_POST['AbandonarEquip']))
+if(isset($_POST['AbandonarEquip'])) //abandonar equip
 {
 $c = ("UPDATE usuaris SET nom_equip = NULL WHERE nom_equip = :EquipNom AND email = :email");
 $Sen = $db->prepare($c);
@@ -201,7 +359,7 @@ exit();
 }
 
 
-if (isset($_POST['subir_imagen'])) {
+if (isset($_POST['subir_imagen'])) { //afegir imatge
   $nom_imatge = $_FILES['imagen']['name'];
   $tipo_imatge = $_FILES['imagen']['type'];
   $tamano_imatge = $_FILES['imagen']['size'];
@@ -221,39 +379,140 @@ if (isset($_POST['subir_imagen'])) {
     $stmt6->bindParam(':nom_equip', $EquipNom);
     $stmt6->execute();
     header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
   }
 }
+
+
+if(isset($_POST['actualitzar_equip'])) //actualitzar equip
+{
+    $id_equip_act = $_POST['id_equip_act'];
+    $nom_curt_act = $_POST['nom_curt_act'];
+    $descripcio_act = $_POST['descripcio_act'];
+    $contrasenya_nova_act = $_POST['contrasenya_nova_equip'];
+    $contrasenya_confirmar_act = $_POST['contrasenya_confirmar_equip'];
+      if(!empty($contrasenya_nova_act) && $contrasenya_nova_act === $contrasenya_confirmar_act) {
+        
+    $stmt_act = $db->prepare("UPDATE equips SET nom_curt = :nom_curt, descripcio = :descripcio, contrasenya_equip = :contrasenya WHERE id_equip = :id_equip");
+    $stmt_act->bindParam(':id_equip', $id_equip_act);
+    $stmt_act->bindParam(':nom_curt', $nom_curt_act);
+    $stmt_act->bindParam(':descripcio', $descripcio_act);
+    $stmt_act->bindParam(':contrasenya', $contrasenya_nova_act);
+    $stmt_act->execute();
+    echo "<script>alert('Equip actualitzat amb èxit');</script>";
+         header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+    }
+   elseif (empty($contrasenya_nova_act)) {
+          
+    $stmt_act = $db->prepare("UPDATE equips SET nom_curt = :nom_curt, descripcio = :descripcio WHERE id_equip = :id_equip");
+    $stmt_act->bindParam(':id_equip', $id_equip_act);
+    $stmt_act->bindParam(':nom_curt', $nom_curt_act);
+    $stmt_act->bindParam(':descripcio', $descripcio_act);
+    $stmt_act->execute();
+    echo "<script>alert('Equip actualitzat amb èxit');</script>";
+         header("Location: ".$_SERVER['PHP_SELF']);
+        exit();
+   }
+
+    
+    
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit();
+}
+
+      
+    $stmt_jug = $db->prepare("SELECT email, usuari FROM usuaris WHERE nom_equip = :nom_equip");
+    $stmt_jug->bindParam(':nom_equip', $EquipNom);
+    $stmt_jug->execute();
+    
+
 ?>
 
 <button class="tablinks" onclick="openTab(event, 'Equip')">Equip</button>
 <button class="tablinks" onclick="openTab(event, 'Jugadors')">Jugadors</button>
 
 <div id="Equip" class="tabcontent">
-  <h3>Informació de l'equip</h3>
-<?php  
-echo"<h2>Equip $EquipNom</h2> <p>$IdEquip</p><p>$NomCurt</p><p>$descripcio</p><p>$ContraEquip</p>";
-echo '<form method="post" action = "equip.php">
+    <div class="perfil-container">
+        <h2>Equip <?php echo $EquipNom; ?></h2>
+        <br>
+        <div class="perfil-content">
+            <h3>Informació de perfil</h3>
+            <br>
+            <form action="equip.php" method="post" class="actualizar-equip">
+                <div class="input-container">
+                    <label for="id_usuari">Id equip:</label>
+                    <input type="text" name="id_equip_act" value="<?php echo $IdEquip; ?>" readonly class="readonly-input"><br>
+                    <br>
+                    <label for="email_usuari">Nom equip:</label>
+                    <input type="text" name="nom_equip_act" value="<?php echo $EquipNom; ?>" readonly  class="readonly-input"><br>
+                    <br>
+                    <label for="nom_usuari">Nom curt:</label>
+                    <input type="text" name="nom_curt_act" value="<?php echo $NomCurt; ?>" class="readonly-input"><br>
+                    <br>
+                    <label for="nom_usuari">Descripció:</label>
+                    <input type="text" name="descripcio_act" value="<?php echo $descripcio; ?>" class="readonly-input"><br>
+                    <br>
+                    <?php
+                    echo '<div class="perfil-img">';
+                    echo '<img src="' . $RutaImatge . '">';
+                    echo '</div>';
+                    ?>
+                </div>
+                <br>
+                <br>
+                <h3>Nova contrasenya</h3>
+                <br>
+                <label for="contrasenya_nova">Nova contrasenya:</label>
+                <input type="password" name="contrasenya_nova_equip" placeholder="Nova contrasenya" class="readonly-input"><br>
+                <br>
+                <label for="Contrasenya_confirmar">Repeteix la nova contrasenya:</label>
+                <input type="password" name="contrasenya_confirmar_equip" placeholder="Repeteix la nova contrasenya" class="readonly-input"><br>
+                <br>
+                <div class="boto-container">
+                    <button type="submit" name="actualitzar_equip">Actualizar equip</button>
+                </div>
+            </form> 
+            <form action="equip.php" method="post">
+                <div class="boto-container">
+                    <button type="submit" name="eliminar_equip" onclick="return confirm('¿Estas segur d\'eliminar aquest equip?')">Eliminar equip</button>
 <button type="submit" name="AbandonarEquip">Abandonar Equip</button>
-</form>';
-echo "$_SESSION[RutaImatge]";
-echo '<div class="perfil-img">';
-echo '<img src="' . $RutaImatge . '">';
-echo '</div>';
-?>
+                </div>
+            </form> 
+             <form method="POST" action="equip.php" enctype="multipart/form-data">
+                <label>Seleccionar imatge</label>
+                <input type="file" name="imagen">
+                <input type="submit" name="subir_imagen" value="Subir imagen">
+            </form>
+        </div>
+    </div>
+</div>
 
-
-
-<form method="POST" action="equip.php" enctype="multipart/form-data">
-  <label>Seleccionar imatge</label>
-  <input type="file" name="imagen">
-  <input type="submit" name="subir_imagen" value="Subir imagen">
-</form>
 
 </div>
 
 <div id="Jugadors" class="tabcontent">
   <h3>Jugadors</h3>
-  <p>Contingut relacionat amb els jugadors.</p>
+  
+  <table>
+       <tr>
+      <th>Email</th>
+      <th>Usuari</th>
+    </tr>
+        <tbody>
+        <?php
+        while ( $resultat_jug = $stmt_jug->fetch(PDO::FETCH_ASSOC)) {
+          echo '<tr>
+        <td>'.$resultat_jug['email'].'</td>
+         <td>'.$resultat_jug['usuari'].'</td>
+                </tr>';
+  
+        }
+        ?>
+        </tbody>
+    </table>
+  
+  
 </div>
 <script>
 function openTab(evt, tabName) {
@@ -270,11 +529,15 @@ function openTab(evt, tabName) {
   evt.currentTarget.className += " active";
 }
 
-// Obre la pestanya "Equip" per defecte en carregar la pàgina
+// Obre la pestanya "Equip" per defecte en carregar la pagina
 document.addEventListener("DOMContentLoaded", function() {
   document.getElementsByClassName("tablinks")[0].click();
 });
 </script>
-
+         </div>
+<footer class="footer">
+    Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
+  </footer>
     </body>
 </html>
+

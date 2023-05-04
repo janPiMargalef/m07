@@ -5,12 +5,9 @@
         <group>
             <file>file:/opt/lampp/htdocs/Projectem07/menu.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/equip.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/buscar_equip.php</file>
             <file>file:/opt/lampp/htdocs/Projectem07/partides.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/estilsOfertes.css</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/buscar.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/iniciarSessio.php</file>
-            <file>file:/opt/lampp/htdocs/Projectem07/provesHTML.php</file>
+            <file>file:/opt/lampp/htdocs/Projectem07/registrarCompte.php</file>
+            <file>file:/opt/lampp/htdocs/Projectem07/estilsPerfil.css</file>
             <file>file:/opt/lampp/htdocs/Projectem07/perfil.php</file>
         </group>
     </open-files>

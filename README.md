@@ -8,6 +8,10 @@ Esquema Entitat Relació: E-R.png
 
 Diagrama Relacional:
 
+color csgo: #FF6600 
+
+color hover: #c27100
+
 Manual usuari de l'aplicació:
 
 

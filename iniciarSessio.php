@@ -5,9 +5,103 @@ require_once('config.php');
 <html>
     <head>
         <title>Iniciar Sessio</title>
-         <link rel="stylesheet" type="text/css" href="estilsRegistrarIniciar.css">
+        <style>
+            body {
+	font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background-image: url('fondo2.jpg');
+        background-size: cover;
+       position: relative;
+        
+}
+
+.container-principal {
+    flex-grow: 1;
+  }
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -1;
+}
+
+.login-container {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	padding: 40px;
+	margin: 70px auto;
+	max-width: 400px;
+        margin-top: 7%;
+}
+
+h2 {
+	margin-top: 0;
+}
+
+label {
+	display: block;
+	margin-bottom: 14px;
+}
+
+input[type="text"], input[type="password"]{
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #CCCCCC;
+	margin-bottom: 24px;
+	width: 100%;
+	box-sizing: border-box;
+}
+button[type="submit"] {
+	background-color: #FF6600;
+	color: #FFFFFF;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: 100%;
+	font-size: 16px;
+}
+
+button[type="submit"]:hover {
+	background-color: #c27100;
+}
+ header {
+    background-color: #1a1a1a;
+    padding: 1rem;
+  }
+
+  
+  .logo {
+      max-height: 180px;
+      max-width: 230px;
+  }
+
+.footer {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    
+  }
+        </style>
     </head>
     <body>
+        <div class="container-principal">
+        <header>
+            <a href="menu.php"><img src="logo.png" class="logo"></a>
+        </header>
+  
 <?php
 $dataHoraActual = date('Y-m-d H:i:s'); //iniciar sessio(pagina mes visitada), per eliminar ofertes inferiors a la actualitat
 
@@ -16,13 +110,17 @@ $stmt_eliminar_ofertes_pasades->bindParam(':dataHoraActual', $dataHoraActual);
 $stmt_eliminar_ofertes_pasades->execute();
 
 
-if(isset($_POST["iniciar"]))
-{
-$emailS = $_POST['emailS'];
-$contrasenyaS = $_POST['contrasenyaS'];
-$sentencia = $db->prepare("SELECT * FROM usuaris WHERE email = '$emailS' AND contrasenya = '$contrasenyaS'");
-$sentencia->execute([$emailS]);
-$numFiles = $sentencia->rowCount(); 
+if (isset($_POST["iniciar"])) {
+    $emailS = $_POST['emailS'];
+    $contrasenyaS = $_POST['contrasenyaS'];
+    
+    $sentencia = $db->prepare("SELECT * FROM usuaris WHERE email = :email AND contrasenya = :contrasenya");
+    $sentencia->bindParam(':email', $emailS);
+    $sentencia->bindParam(':contrasenya', $contrasenyaS);
+    $sentencia->execute();
+    $numFiles = $sentencia->rowCount();
+
+
 
 if($numFiles > 0)
 {
@@ -86,6 +184,10 @@ else{
 		</form>
                 <p>No tens un compte?<a href="registrarCompte.php">Registret</a></p>
 	</div>
+        </div>
+        <footer class="footer">
+    Copyright &copy; 2023 <a href="#política de privacitat">Política de privacitat.</a>
+  </footer>
 
  </body>
 </html>

@@ -5,30 +5,219 @@ require_once('config.php');
 <html>
     <head>
         <title>buscar partida</title>
-        <link rel="stylesheet" type="text/css" href="estilsOfertes.css">
+        <style> 
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin: auto;
+  margin-top: 2%;
+}
+
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+h2 {
+    margin-top: 2%;
+    text-align: center;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  margin-top: 2%;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.perfil-img {
+  width: 10px;
+  height: 10px;
+  border-radius: 10%;
+  overflow: hidden;
+}
+
+.perfil-img img {
+  width: 10%;
+  height: 10%;
+  object-fit: cover;
+}
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('map.webp');
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -1;
+}
+  
+  header {
+    background-color: #1a1a1a;
+    padding: 1rem;
+  }
+  nav {
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+ 
+    align-items: center;
+  }
+
+  nav a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+   .buscador {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    margin-top: 0.5%;
+    padding: 4px 8px;
+    margin-left: 50%;
+  }
+  #nom_equip_buscar {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+    height: 35px;
+  }
+
+  
+
+  .boto {
+    border: none;
+    background-color: #FF6600;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin-left: 2%;
+  }
+
+  .container-principal {
+    flex-grow: 1;
+  }
+  
+  .boto:hover {
+    background-color: #c27100;
+  }
+  .footer {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    
+  }
+  .logo {
+      max-height: 150px;
+      max-width: 200px;
+  }
+  .content-capça {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  width: 60%;
+}
+.caja {
+  display: flex;
+  position: absolute;
+  padding: 2rem;
+   
+  z-index: 10; 
+}
+
+.formulari {
+  background-color: #f2f2f2;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 200px;
+}
+
+.formulari label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.formulari input,
+.formulari select {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.formulari input[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.formulari input[type="submit"]:hover {
+  background-color: #45a049;
+}
+         </style>
     </head>
     <body>     
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="menu.php">Menu</a>
-        <a class="nav-link active" href="equip.php">Equip</a>
-        <!--a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled">Disabled</a>
-        <a class="nav-link disabled">Disabled</a>-->
-        <a class="nav-link active" href="buscar.php">Buscar</a>
-        <a class="nav-link active" href="partides.php">Partides</a>
-        <a class="nav-link active" href="perfil.php">Perfil</a>
-      </div>
-    </div>
-  </div>
-</nav>
+  <div class="container-principal">
+<header>
+    <a href="menu.php"><img src="logo.png" class="logo"></a>
+</header>
+  <nav>
+    <a href="menu.php">Menú</a>
+    <a href="equip.php">Equip</a>
+    <a href="buscar.php">Buscar</a>
+    <a href="partides.php">Partides</a>
+    <a href="perfil.php">Perfil</a>
+    <form action="buscar_equip.php" method="post" class="buscador">
+            <input type="text" name="nom_equip_buscar" id="nom_equip_buscar" placeholder="Buscar equip" required>
+            <button type="submit" class ="boto">Buscar</button>
+        </form>
+  </nav>
 <?php
 $NomEquipCrear = $_SESSION['UsuariEquip'];
 $ImatgeRuta = $_SESSION['SesionImatge'];
@@ -74,24 +263,28 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
 }
 
 ?>
-<form method="post" action="buscar.php" class="formulari">
-  <label for="dia">Día:</label>
-  <input type="date" name="dia" min="<?php echo date('Y-m-d'); ?>" required> <!-- No es poden seleccionar dies que ja han passat -->
-  </br>
-  <label for="hora">Hora:</label>
-  <input type="time" name="hora" required>
-  </br>
-  <label for="mapa">Mapa:</label>
-  <select name="mapa">
-    <option value="Dust II">Dust II</option>
-    <option value="Mirage">Mirage</option>
-    <option value="Inferno">Inferno</option>
-    <option value="Nuke">Nuke</option>
-    <option value="Overpass">Overpass</option>
-  </select>
-  <input type="submit" name="crearOferta" value="crea">
-</form>
+<div class="caja">
+  <form method="post" action="buscar.php" class="formulari">
+    <label for="dia">Día:</label>
+    <input type="date" name="dia" min="<?php echo date('Y-m-d'); ?>" required>
+    </br>
+    <label for="hora">Hora:</label>
+    <input type="time" name="hora" required>
+    </br>
+    <label for="mapa">Mapa:</label>
+    <select name="mapa">
+      <option value="Dust II">Dust II</option>
+      <option value="Mirage">Mirage</option>
+      <option value="Inferno">Inferno</option>
+      <option value="Nuke">Nuke</option>
+      <option value="Overpass">Overpass</option>
+    </select>
+    <input type="submit" name="crearOferta" value="crea">
+  </form>
+</div>
+
     <div class="container">
+        <div class="content-capça">
     <h2>Ofertes d'altres equips</h2>
     <table>
        <tr>
@@ -100,6 +293,7 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
       <th>Dia</th>
       <th>Hora</th>
       <th>Mapa</th>
+      <th></th>
     </tr>
         <tbody>
         <?php
@@ -125,7 +319,9 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
         </tbody>
     </table>
     </div>
+    </div>
 <div class="container">
+    <div class="content-capça">
     <br>
     <br>
     <h2>Ofertes del teu equip</h2>
@@ -136,6 +332,7 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
       <th>Dia</th>
       <th>Hora</th>
       <th>Mapa</th>
+       <th></th>
     </tr>
         <tbody>
         <?php
@@ -168,7 +365,10 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
   </tbody>
 </table>
 </div>
-
-
+  </div>
+      </div>
+<footer class="footer">
+    Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
+  </footer>
     </body>
 </html>

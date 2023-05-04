@@ -4,7 +4,7 @@ session_start();
 ?>
 <?php
 $emailE = $_SESSION['UsuariEmail']; //tancar sessió 
-if(isset($_POST['tancar_sessio']))//potser fer form amb tota la informacio i al donarli a guardar fer un update uk uk
+if(isset($_POST['tancar_sessio']))
 {
 session_unset();
 session_destroy();
@@ -55,52 +55,144 @@ exit();
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-top: 4%;
 }
+
 
 .perfil-container button:hover {
     opacity: 0.8;
 }
 
 button[name="actualizar_perfil"] {
-    background-color: #4CAF50; /* Verde */
+    background-color: #4CAF50;
     color: white;
 }
 
 button[name="eliminar_compte"] {
-    background-color: #f44336; /* Rojo */
+    background-color: #f44336; 
     color: white;
 }
 
 button[name="tancar_sessio"] {
-    background-color: #FFA500; /* Naranja */
+    background-color: #FFA500;
     color: white;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url('map.webp');
+    
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: -1;
+}
+  header {
+    background-color: #1a1a1a;
+    padding: 1rem;
+  }
+  nav {
+    background-color: #333;
+    overflow: hidden;
+    display: flex;
+ 
+    align-items: center;
+  }
+
+  nav a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  nav a:hover {
+    background-color: #ddd;
+    color: black;
+  }
+
+   .buscador {
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    margin-top: 0.5%;
+    padding: 4px 8px;
+    margin-left: 50%;
+  }
+  #nom_equip_buscar {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    outline: none;
+    font-size: 14px;
+    height: 35px;
+  }
+
+  
+
+  .boto {
+    border: none;
+    background-color: #FF6600;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    height: 35px;
+    margin-left: 2%;
+  }
+
+  .container-principal {
+    flex-grow: 1;
+  }
+  
+  .boto:hover {
+    background-color: #c27100;
+  }
+  .footer {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    color: white;
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 0;
+    
+  }
+  .logo {
+      max-height: 150px;
+      max-width: 200px;
+  }
 </style>
 
 </head>
     <body>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">LOGO</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" aria-current="page" href="menu.php">Menu</a>
-        <a class="nav-link active" href="equip.php">Equip</a>
-        <!--a class="nav-link" href="#">Pricing</a>
-        <a class="nav-link disabled">Disabled</a>
-        <a class="nav-link disabled">Disabled</a>-->
-        <a class="nav-link active" href="buscar.php">Buscar</a>
-        <a class="nav-link active" href="partides.php">Partides</a>
-        <a class="nav-link active" href="perfil.php">Perfil</a>
-      </div>
-    </div>
-  </div>
-</nav>
+ <div class="container-principal">
+<header>
+    <a href="menu.php"><img src="logo.png" class="logo"></a>
+</header>
+  <nav>
+    <a href="menu.php">Menú</a>
+    <a href="equip.php">Equip</a>
+    <a href="buscar.php">Buscar</a>
+    <a href="partides.php">Partides</a>
+    <a href="perfil.php">Perfil</a>
+    <form action="buscar_equip.php" method="post" class="buscador">
+            <input type="text" name="nom_equip_buscar" id="nom_equip_buscar" placeholder="Buscar equip" required>
+            <button type="submit" class ="boto">Buscar</button>
+        </form>
+  </nav>
 <?php
 
 $emailS = $_SESSION['UsuariEmail'];
@@ -172,7 +264,7 @@ if (isset($_POST['actualizar_perfil'])) { //actualitzar valors del perfil
             <input type="text" name="nom_usuari" value="<?php echo $_SESSION['Usuari']; ?>" class="readonly-input"><br>
             <br>
             <br>
-            <h2>Nova contrasenya</h2>
+            <h3>Nova contrasenya</h3>
             <br>
             <label for="contrasenya_nova">Nova contrasenya:</label>
             <input type="password" name="contrasenya_nova" placeholder="Nova contrasenya" class="readonly-input"><br>
@@ -180,20 +272,23 @@ if (isset($_POST['actualizar_perfil'])) { //actualitzar valors del perfil
             <label for="Contrasenya_confirmar">Repeteix la nova contrasenya:</label>
             <input type="password" name="Contrasenya_confirmar" placeholder="Repeteix la nova contrasenya" class="readonly-input"><br>
             <br>
-            <div class="boto-container">
+           <div class="boto-container">
+    <form action="perfil.php" method="post">
         <button type="submit" name="actualizar_perfil">Actualizar perfil</button>
-        
-        <form action="perfil.php" method="post">
-            <button type="submit" name="eliminar_compte" onclick="return confirm('¿Estas segur d\'eliminar el teu compte?')">Eliminar cuenta</button>
-        </form>
-
-        <form action="perfil.php" method="post">
-            <button type="submit" name="tancar_sessio">Tancar Sessió</button>
+        <button type="submit" name="eliminar_compte" onclick="return confirm('¿Estas segur d\'eliminar el teu compte?')">Eliminar cuenta</button>
+        <button type="submit" name="tancar_sessio">Tancar Sessió</button>
     </form>
-		</div>
+               
+</div>
                 </div>
     </form>
                 </div>
 
+</div>
+ </div>
+    
+   <footer class="footer">
+    Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
+  </footer>
 </body>
 </html>
