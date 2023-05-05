@@ -24,7 +24,7 @@ exit();
 ?>
 <html>
     <head>
-        <title>perfil</title>
+        <title>Perfil</title>
         <link rel="stylesheet" type="text/css" href="estilsPerfil.css">
        
     
@@ -43,6 +43,7 @@ exit();
 }
 
 .perfil-container .boto-container {
+    
     display: flex;
     margin-left: 20%;
     gap: 25px;

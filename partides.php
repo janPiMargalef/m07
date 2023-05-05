@@ -4,7 +4,7 @@ session_start();
 ?>
 <html>
     <head>
-        <title>partides</title>
+        <title>Partides</title>
         <style>
 table {
   border-collapse: collapse;
@@ -140,6 +140,7 @@ body::before {
       max-width: 200px;
   }
 .content-capça {
+    border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
   margin-bottom: 1rem;

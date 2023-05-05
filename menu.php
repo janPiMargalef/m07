@@ -95,16 +95,7 @@ session_start();
      z-index: -1;
   }
 
-   .menu {
-    background-image: url('map.webp');
-    background-size: cover;
-    background-position: center;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-  }
+  
 
   .menu::before {
     content: "";
@@ -119,23 +110,47 @@ session_start();
 
   .menu-cont {
     color: white;
-    font-size: 2rem;
+    font-size: 3rem;
     z-index: 1;
   }
 
-   .container {
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-.content-box {
-    background-color: #d1d1d1;
-    padding: 1rem;
-    width: 30%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
-  }
+.container {
+  padding: 2rem;
+  display: flex;
+  justify-content: flex-start; 
+  flex-wrap: wrap;
+   margin-left: 14%; 
+   margin-top: 2%;
+}
+
+.content-capça {
+  background-color: #d1d1d1;
+  padding: 1rem;
+  width: 18%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  margin-right: 10%; 
+  
+}
+.content-capça button {
+      background-color: #FF6600 ;
+      border: none;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      padding: 10px 24px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      margin-top: 3%;
+      margin-left: 18%;
+    }
+
+    .content-capça button:hover {
+      background-color: #c27100;
+    }
   
   .titol {
     font-size: 1.25rem;
@@ -176,38 +191,49 @@ session_start();
     
      <div class="menu">
     <div class="menu-cont">
-      Títol de la pàgina
+      CS:GO Troba Equips i Enfronta't!
     </div>
   </div>
     
    <div class="container">
-    <div class="content-box">
-      <h2 class="titol">Cont 1</h2>
-      <p>Descripció del contingut .</p>
+    <div class="content-capça">
+      <h2 class="titol">Busca un equip</h2>
+      <p>Forma o uneix-te a un equip amb els teus amics:
+Descobreix nous companys de joc o crea el teu propi equip amb els teus amics per competir junts en CS:GO. Connecta amb altres jugadors apassionats i millora les teves habilitats en equip.</p>
+     <button onclick="canviarPaginaEquip()">Equips</button>
+  <script>
+    function canviarPaginaEquip() {
+      window.location.href = 'equip.php';
+    }
+  </script>
+
     </div>
-    <div class="content-box">
-      <h2 class="titol">Cont 2</h2>
-      <p>Descripció del contingut .</p>
+    <div class="content-capça">
+      <h2 class="titol">Busca partides</h2>
+      <p>Cerca i accepta desafiaments amb altres equips:
+Explora o crea ofertes de partides per enfrontar-te a altres equips, establint l'hora, el dia i el mapa que millor s'adapti a les vostres necessitats. Accepta el repte i demostra el teu domini en el joc.</p>
+     <button onclick="canviarPaginaBuscar()">Buscar partides</button>
+  <script>
+    function canviarPaginaBuscar() {
+      window.location.href = 'buscar.php';
+    }
+  </script>
     </div>
-    <div class="content-box">
-      <h2 class="titol">Cont 3</h2>
-      <p>Descripció del contingut .</p>
+    <div class="content-capça">
+      <h2 class="titol">Partides</h2>
+      <p>Segueix les partides acceptades del teu equip:
+Consulta la pàgina "Partides" per veure les partides que el teu equip ha acceptat. No perdis detall de les teves properes confrontacions i prepara't per a la victòria en el camp de batalla virtual.</p>
+    <button onclick="canviarPaginaPartides()">Partides</button>
+  <script>
+    function canviarPaginaPartides() {
+      window.location.href = 'partides.php';
+    }
+  </script>
     </div>
   </div>
      </div>
   <footer class="footer">
     Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
-  </footer>
-<?php
-
-if(isset($_SESSION['UsuariEmail'])) // afegir aixo a totes les pàgines, per si no s'ha iniciat sessió, surti la opció iniciar (fer-ho al acabar els CSS )
-{
-}
- else {
-    
-echo "<a href='registrarCompte.php'>Registret</a> <a href='iniciarSessio.php'>Inicia Sessió</a>";
- }
- ?>
-    
+  </footer>    
 </body>
 </html>

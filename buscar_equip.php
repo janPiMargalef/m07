@@ -4,14 +4,14 @@ require_once('config.php');
 ?>
 <html>
     <head>
-        <title>buscar partida</title>
+        <title>Buscar equip</title>
         <script>
         function buscarEquipo() {
             var nomEquip = document.getElementById("nom_equip_buscar").value;
             if (nomEquip.length > 0) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
+                    if (this.readyState === 4 && this.status === 200) {
                         document.getElementById("resultados").innerHTML = this.responseText;
                     }
                 };
@@ -198,7 +198,7 @@ echo '</div> <br> <br>';
 
     }
     else{
-         echo"no existeix";
+         echo"<h1>no existeix</h1>";
     }
 }
 ?>

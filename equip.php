@@ -2,10 +2,11 @@
 <?php
 session_start();
 require_once('config.php');
+ob_start();
 ?>
 <html>
     <head>
-        <title>equip</title>
+        <title>Equip</title>
         <link rel="stylesheet" type="text/css" href="estilsPerfil.css">
         <style>
            body {
@@ -208,6 +209,43 @@ button[name="tancar_sessio"] {
     background-color: #FFA500;
     color: white;
 }
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 25px;
+}
+
+.formularis {
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+  background-color: white;
+}
+
+.label-formulari {
+  margin-top: 7%;
+}
+
+.formularis input,
+.formularis textarea {
+  margin: 0.5rem 0;
+  width: 50%;
+  height: 30px;
+}
+
+.boto-formulari {
+  border-radius: 4px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+h1{
+    color: white;
+}
+
 
 </style>
     </head>
@@ -227,6 +265,7 @@ button[name="tancar_sessio"] {
             <button type="submit" class ="boto">Buscar</button>
         </form>
   </nav>
+<?php if (isset($_SESSION['UsuariEquip'])): ?>
 <?php
 //obtenir el nom d'equip
 $EmailUnir = $_SESSION['UsuariEmail']; 
@@ -248,28 +287,7 @@ $result = $sent->fetch(PDO::FETCH_ASSOC);//obtenir info del equip
 echo "<script>alert('buit'); </script>";
 }
 if ($resultat['nom_equip'] === null) { //si usuari no té equip mostra formulari per unir-se o crear(cuidado, si elimines desde phpMyadmin no set null)
-    echo '
-<h1>Crear Equip</h1>
-<form method="post">
-  <label for="nomEquip">Nom equip</label>
-  <input type="text" name="nomE" required>
-  <label for="nomCurt">Nom curt</label>
-  <input type="text" name="nomCurt" required>
-  <label for="password">Contrasenya</label>
-  <input type="password" name="contrasenyaE" required>
-  <label for="descripcio">Descripcio</label>
-  <textarea name="descripcioE"></textarea>
-  <button type="submit" name="crearEquip">Crear equip</button>
-</form>
-<h1>Unir-se a un Equip</h1>
-<form method="post" action = "equip.php">
-  <label for="username">Nom de l\'equip</label>
-  <input type="text" name="NomEquipUsuari" required>
-  <label for="password">Contrasenya de l\'equip</label>
-  <input type="password" name="ContraEquipUsuari" required>
-  <button type="submit" name="UnirseEquip">Unir-se</button>
-</form>
-';
+ 
 }
 else{//info equip
 $IdEquip = $result['id_equip'];
@@ -287,77 +305,12 @@ $Sen = $db->prepare($c);
 $Sen->bindParam(':EquipNom', $EquipNom);
 $Sen->bindParam(':email', $EmailUnir);
 $Sen->execute();
+unset($_SESSION['UsuariEquip']);
  header("Location: ".$_SERVER['PHP_SELF']);
  exit();
  
 }
 }
-
-if(isset($_POST['UnirseEquip']))//afegir el nom de l'equip a l'usuari que s'ha unit, aixi puc consultar quins usuaris estan dins d'un equip
-{
-$EquipUnir = $_POST['NomEquipUsuari'];
-$ContraUnir = $_POST['ContraEquipUsuari'];
-
-$Consulta = 'SELECT email FROM usuaris WHERE nom_equip = :nom_equip';//comprobar que l'equip no està plè (8 usuaris com a màxim)
-$Sentencia = $db->prepare($Consulta);
-$Sentencia->bindParam(':nom_equip', $EquipUnir);
-$Sentencia->execute();
-$NumeroFiles = $Sentencia->rowCount(); 
-
-if($NumeroFiles > 8)
-{
-    echo "<script>alert('Equip ple'); </script>";
-}
-else
-{
-$con = 'SELECT * FROM equips WHERE nom_equip = :nom_equip AND contrasenya_equip = :contrasenya_equip';//comprobar contrasenya d'equip
-$sen = $db->prepare($con);
-$sen->bindParam(':nom_equip', $EquipUnir);
-$sen->bindParam(':contrasenya_equip', $ContraUnir);
-$sen->execute();
-$numeroFiles = $sen->rowCount(); 
-
-if($numeroFiles > 0)
-{
-$consulta = 'UPDATE usuaris SET nom_equip = :nom_equip WHERE email = :email';//unir
-$s = $db->prepare($consulta);
-$s->bindParam(':nom_equip', $EquipUnir);
-$s->bindParam(':email', $EmailUnir);
-$s->execute();
-echo "<script>alert('Unit correctament a $EquipUnir'); </script>";
- header("Location: ".$_SERVER['PHP_SELF']);
- $_SESSION['UsuariEquip'] = $EquipUnir;
-}
-else{
-    echo "<script>alert('Contrasenya incorrecta'); </script>";
-}
-}
-}
-if(isset($_POST["crearEquip"])) //crear equip
-{
-$nomEquip = $_POST['nomE'];
-$NomCurt = $_POST['nomCurt'];
-$contrasenyaEquip = $_POST['contrasenyaE'];
-$descripcioEquip = $_POST['descripcioE'];
-
-$sentencia = $db->prepare("SELECT nom_equip FROM equips WHERE nom_equip = ? LIMIT 1;");
-$sentencia->execute([$nomEquip]);
-
-$numFiles = $sentencia->rowCount(); 
-if($numFiles > 0)
-{
-    echo "<script>alert('El nom de l\'equip ja existeix'); </script>";
-}
-else{
-    $sql = "INSERT INTO equips (nom_equip, nom_curt, contrasenya_equip, descripcio) VALUES (?,?,?,?)";
-$stmtinsert = $db->prepare($sql);
-$result = $stmtinsert->execute([$nomEquip, $NomCurt, $contrasenyaEquip, $descripcioEquip]);
-echo "<script>alert('Equip creat'); </script>";
- header("Location: ".$_SERVER['PHP_SELF']);
-exit();
-}
-}
-
 
 if (isset($_POST['subir_imagen'])) { //afegir imatge
   $nom_imatge = $_FILES['imagen']['name'];
@@ -378,6 +331,7 @@ if (isset($_POST['subir_imagen'])) { //afegir imatge
     $stmt6->bindParam(':imatge', $ruta_imatge);
     $stmt6->bindParam(':nom_equip', $EquipNom);
     $stmt6->execute();
+    $_SESSION['SesionImatge'] = $ruta_imatge;
     header("Location: ".$_SERVER['PHP_SELF']);
     exit();
   }
@@ -475,7 +429,6 @@ if(isset($_POST['actualitzar_equip'])) //actualitzar equip
             </form> 
             <form action="equip.php" method="post">
                 <div class="boto-container">
-                    <button type="submit" name="eliminar_equip" onclick="return confirm('¿Estas segur d\'eliminar aquest equip?')">Eliminar equip</button>
 <button type="submit" name="AbandonarEquip">Abandonar Equip</button>
                 </div>
             </form> 
@@ -534,10 +487,109 @@ document.addEventListener("DOMContentLoaded", function() {
   document.getElementsByClassName("tablinks")[0].click();
 });
 </script>
-         </div>
+        
+         
+         <?php else: ?>
+<?php
+$EmailUnir = $_SESSION['UsuariEmail']; 
+if(isset($_POST['UnirseEquip']))//afegir el nom de l'equip a l'usuari que s'ha unit, aixi puc consultar quins usuaris estan dins d'un equip
+{
+$EquipUnir = $_POST['NomEquipUsuari'];
+$ContraUnir = $_POST['ContraEquipUsuari'];
+
+$Consulta = 'SELECT email FROM usuaris WHERE nom_equip = :nom_equip';//comprobar que l'equip no està plè (8 usuaris com a màxim)
+$Sentencia = $db->prepare($Consulta);
+$Sentencia->bindParam(':nom_equip', $EquipUnir);
+$Sentencia->execute();
+$NumeroFiles = $Sentencia->rowCount(); 
+
+if($NumeroFiles > 8)
+{
+    echo "<script>alert('Equip ple'); </script>";
+}
+else
+{
+$con = 'SELECT * FROM equips WHERE nom_equip = :nom_equip AND contrasenya_equip = :contrasenya_equip';//comprobar contrasenya d'equip
+$sen = $db->prepare($con);
+$sen->bindParam(':nom_equip', $EquipUnir);
+$sen->bindParam(':contrasenya_equip', $ContraUnir);
+$sen->execute();
+$numeroFiles = $sen->rowCount(); 
+
+if($numeroFiles > 0)
+{
+$consulta = 'UPDATE usuaris SET nom_equip = :nom_equip WHERE email = :email';//unir
+$s = $db->prepare($consulta);
+$s->bindParam(':nom_equip', $EquipUnir);
+$s->bindParam(':email', $EmailUnir);
+$s->execute();
+echo "<script>alert('Unit correctament a $EquipUnir'); </script>";
+ header("Location: ".$_SERVER['PHP_SELF']);
+ $_SESSION['UsuariEquip'] = $EquipUnir;
+}
+else{
+    echo "<script>alert('Contrasenya incorrecta'); </script>";
+}
+}
+}
+if(isset($_POST["crearEquip"])) //crear equip
+{
+$nomEquip = $_POST['nomE'];
+$NomCurt = $_POST['nomCurt'];
+$contrasenyaEquip = $_POST['contrasenyaE'];
+$descripcioEquip = $_POST['descripcioE'];
+
+$sentencia = $db->prepare("SELECT nom_equip FROM equips WHERE nom_equip = ? LIMIT 1;");
+$sentencia->execute([$nomEquip]);
+
+$numFiles = $sentencia->rowCount(); 
+if($numFiles > 0)
+{
+    echo "<script>alert('El nom de l\'equip ja existeix'); </script>";
+}
+else{
+    $sql = "INSERT INTO equips (nom_equip, nom_curt, contrasenya_equip, descripcio) VALUES (?,?,?,?)";
+$stmtinsert = $db->prepare($sql);
+$result = $stmtinsert->execute([$nomEquip, $NomCurt, $contrasenyaEquip, $descripcioEquip]);
+echo "<script>alert('Equip creat'); </script>";
+ header("Location: ".$_SERVER['PHP_SELF']);
+exit();
+}
+}
+
+?>
+
+
+
+<div class="form-container">
+    <h1>Unir-se a un Equip</h1>
+    <form method="post" action="equip.php" class="formularis">
+        <label for="username" class="label-formulari">Nom de l'equip</label>
+        <input type="text" name="NomEquipUsuari" required>
+        <label for="password" class="label-formulari">Contrasenya de l'equip</label>
+        <input type="password" name="ContraEquipUsuari" required>
+        <button type="submit" name="UnirseEquip" class="boto-formulari">Unir-se</button>
+    </form>
+    <h1>Crear Equip</h1>
+    <form method="post" class="formularis">
+        <label for="nomEquip" class="label-formulari">Nom equip</label>
+        <input type="text" name="nomE" required>
+        <label for="nomCurt" class="label-formulari">Nom curt</label>
+        <input type="text" name="nomCurt" required>
+        <label for="password" class="label-formulari">Contrasenya</label>
+        <input type="password" name="contrasenyaE" required>
+        <label for="descripcio" class="label-formulari">Descripcio</label>
+        <textarea name="descripcioE"></textarea>
+        <button type="submit" name="crearEquip" class="boto-formulari">Crear equip</button>
+    </form>
+</div>
+
+
+<?php endif; ?>
 <footer class="footer">
     Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
   </footer>
+<?php ob_end_flush(); ?>
     </body>
 </html>
 

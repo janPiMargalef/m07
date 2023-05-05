@@ -8,9 +8,7 @@ Esquema Entitat Relació: E-R.png
 
 Diagrama Relacional:
 
-color csgo: #FF6600 
-
-color hover: #c27100
+chmod 777 /opt/lampp/htdocs/Projectem07/imatges/
 
 Manual usuari de l'aplicació:
 

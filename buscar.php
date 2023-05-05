@@ -4,7 +4,7 @@ require_once('config.php');
 ?>
 <html>
     <head>
-        <title>buscar partida</title>
+        <title>Buscar partida</title>
         <style> 
 table {
   border-collapse: collapse;
@@ -149,12 +149,14 @@ th, td {
       max-width: 200px;
   }
   .content-capça {
+      border-radius: 4px;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 1rem;
   margin-bottom: 1rem;
   width: 60%;
 }
 .caja {
+    
   display: flex;
   position: absolute;
   padding: 2rem;
@@ -200,6 +202,11 @@ th, td {
 .formulari input[type="submit"]:hover {
   background-color: #45a049;
 }
+.h1{
+    text-align: center;
+    color: white;
+    margin-bottom: 38%;
+}
          </style>
     </head>
     <body>     
@@ -218,6 +225,7 @@ th, td {
             <button type="submit" class ="boto">Buscar</button>
         </form>
   </nav>
+<?php if (isset($_SESSION['UsuariEquip'])): ?>
 <?php
 $NomEquipCrear = $_SESSION['UsuariEquip'];
 $ImatgeRuta = $_SESSION['SesionImatge'];
@@ -367,6 +375,11 @@ if(isset($_POST['eliminar_oferta']) && isset($_POST['id_oferta'])) { //eliminar 
 </div>
   </div>
       </div>
+        <?php else: ?>
+        <h1 class="h1">Necessites un Equip</h1>
+      
+            
+        <?php endif; ?>
 <footer class="footer">
     Copyright &copy; <a href="#política de privacitat">Política de privacitat.</a>
   </footer>
