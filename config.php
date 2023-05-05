@@ -1,7 +1,7 @@
 <?php
 $db_usuari = "root";
 $db_contrasenya = "";
-$db_nom = "projecte";
+$db_nom = "proves_projecte";
 $nomservidor = "localhost";
 
 $db = new PDO("mysql:host=$nomservidor;dbname=$db_nom", $db_usuari, $db_contrasenya);
